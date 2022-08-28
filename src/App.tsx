@@ -1,5 +1,6 @@
-import { useState } from "react";
 import "./App.css";
+
+import { useState } from "react";
 
 export function App() {
   const [counter, setCounter] = useState(0);
