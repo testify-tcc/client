@@ -1,5 +1,7 @@
 import "./App.scss";
 
+import { Button, Text } from "@chakra-ui/react";
+
 import { useState } from "react";
 
 export function App() {
@@ -7,14 +9,19 @@ export function App() {
 
   return (
     <div className="app-container">
-      <h1>Hello, World!</h1>
-      <button
+      <Text as="u" fontSize="6xl" color="teal">
+        Hello, World!
+      </Text>
+      <Button
+        colorScheme="teal"
+        size="lg"
+        variant="solid"
         onClick={() => {
           setCounter((oldCounter) => oldCounter + 1);
         }}
       >
         Counter: {counter}
-      </button>
+      </Button>
     </div>
   );
 }
