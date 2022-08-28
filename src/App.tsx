@@ -2,6 +2,7 @@ import "./App.scss";
 
 import { Button, Text } from "@chakra-ui/react";
 
+import { FontFamilies } from "./theme";
 import { useState } from "react";
 
 export function App() {
@@ -9,7 +10,12 @@ export function App() {
 
   return (
     <div className="app-container">
-      <Text as="u" fontSize="6xl" color="teal">
+      <Text
+        as="u"
+        fontSize="6xl"
+        color="teal"
+        fontFamily={FontFamilies.COMFORTAA}
+      >
         Hello, World!
       </Text>
       <Button
