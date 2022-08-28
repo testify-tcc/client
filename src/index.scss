@@ -1,1 +1,8 @@
 @import "./css-variables/font-families.scss";
+@import "./css-variables/colors.scss";
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
