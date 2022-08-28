@@ -4,6 +4,14 @@ const ReactRefreshWebpackPlugin = require("@pmmmwh/react-refresh-webpack-plugin"
 module.exports = {
   mode: "development",
   devtool: "cheap-module-source-map",
+  module: {
+    rules: [
+      {
+        test: /\.(css|scss)$/,
+        use: ["style-loader", "css-loader", "sass-loader"],
+      },
+    ],
+  },
   devServer: {
     hot: true,
     open: true,
