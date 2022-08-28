@@ -2,8 +2,13 @@ const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 
 module.exports = {
-  entry: path.resolve(__dirname, "..", "./src/index.tsx"),
+  entry: path.resolve(__dirname, "..", "src/index.tsx"),
   resolve: {
+    alias: {
+      src: path.resolve(__dirname, "..", "src/"),
+      components: path.resolve(__dirname, "..", "src/components/"),
+      labels: path.resolve(__dirname, "..", "src/labels/"),
+    },
     extensions: [".tsx", ".ts", ".js"],
   },
   module: {

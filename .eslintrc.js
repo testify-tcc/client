@@ -8,6 +8,12 @@ module.exports = {
     react: {
       version: "detect",
     },
+    "import/resolver": {
+      typescript: {
+        alwaysTryTypes: true,
+        project: "./tsconfig.json",
+      },
+    },
   },
   extends: [
     "plugin:react/recommended",
@@ -39,5 +45,6 @@ module.exports = {
         allowSeparatedGroups: false,
       },
     ],
+    "import/no-named-as-default-member": "off",
   },
 };
