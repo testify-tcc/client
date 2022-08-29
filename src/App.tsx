@@ -1,15 +1,26 @@
-import { Route, Routes } from "react-router-dom";
+import "./App.scss";
+
+import { Colors, FontFamilies } from "./theme";
+import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 
 import { Box } from "@chakra-ui/react";
-import { FontFamilies } from "./theme";
+import { Exercises } from "./components/Exercises";
 import { Home } from "./components/Home";
+import { Paths } from "./paths";
 
 export function App() {
   return (
-    <Box fontFamily={FontFamilies.COMFORTAA}>
-      <Routes>
-        <Route path="/" element={<Home />} />
-      </Routes>
+    <Box
+      className="app-container"
+      bgColor={Colors.WHITE}
+      fontFamily={FontFamilies.COMFORTAA}
+    >
+      <Router>
+        <Routes>
+          <Route path={Paths.HOME} element={<Home />} />
+          <Route path={Paths.EXERCISES} element={<Exercises />} />
+        </Routes>
+      </Router>
     </Box>
   );
 }

@@ -1,14 +1,29 @@
+import "./DefaultLayout.scss";
+
 import { Box } from "@chakra-ui/react";
 import { Navbar } from "src/components/Navbar";
 import { PropsWithChildren } from "react";
+import classNames from "classnames";
 
-type Props = PropsWithChildren;
+type Props = PropsWithChildren & {
+  classes?: {
+    container?: string;
+    childrenContainer?: string;
+  };
+};
 
-export function DefaultLayout({ children }: Props) {
+export function DefaultLayout({ children, classes }: Props) {
   return (
-    <Box className="default-layout-container">
+    <Box className={classNames("default-layout-container", classes?.container)}>
       <Navbar />
-      {children}
+      <Box
+        className={classNames(
+          "default-layout-children-container",
+          classes?.childrenContainer,
+        )}
+      >
+        {children}
+      </Box>
     </Box>
   );
 }
