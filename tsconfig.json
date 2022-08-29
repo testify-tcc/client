@@ -15,8 +15,7 @@
     "baseUrl": ".",
     "paths": {
       "src/*": ["./src/*"],
-      "components/*": ["./src/components/*"],
-      "labels/*": ["./src/labels/*"]
+      "components/*": ["./src/components/*"]
     }
   },
   "include": ["src/**/*", "test/**/*"]
