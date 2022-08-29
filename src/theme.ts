@@ -6,21 +6,15 @@ export enum FontFamilies {
 }
 
 export enum Colors {
-  PRIMARY = "primary",
-  SECONDARY = "secondary",
-  WHITE = "white",
-  BLACK = "back",
+  PRIMARY = "teal",
+  SECONDARY = "yellow",
+  WHITE = "gray.50",
+  BLACK = "black",
 }
 
 export const theme = extendTheme({
   fonts: {
     [FontFamilies.COMFORTAA]: `"Comfortaa", cursive`,
     [FontFamilies.OPEN_SANS]: `"Open Sans", sans-serif`,
-  },
-  colors: {
-    [Colors.PRIMARY]: "#2DA7A5",
-    [Colors.SECONDARY]: "#dc9934",
-    [Colors.WHITE]: "#f7f7f7",
-    [Colors.BLACK]: "#272727",
   },
 });
