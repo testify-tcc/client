@@ -1,20 +1,15 @@
-import "./App.scss";
+import { Route, Routes } from "react-router-dom";
 
-import { Colors, FontFamilies } from "./theme";
-
-import { AboutTestify } from "./components/AboutTestify";
 import { Box } from "@chakra-ui/react";
-import { Navbar } from "./components/Navbar";
+import { FontFamilies } from "./theme";
+import { Home } from "./components/Home";
 
 export function App() {
   return (
-    <Box
-      className="app-container"
-      bgColor={Colors.WHITE}
-      fontFamily={FontFamilies.COMFORTAA}
-    >
-      <Navbar />
-      <AboutTestify />
+    <Box fontFamily={FontFamilies.COMFORTAA}>
+      <Routes>
+        <Route path="/" element={<Home />} />
+      </Routes>
     </Box>
   );
 }

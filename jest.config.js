@@ -14,4 +14,5 @@ module.exports = {
     "^.+\\.(js|jsx|ts|tsx)$": "<rootDir>/node_modules/babel-jest",
   },
   moduleDirectories: ["<rootDir>/src", "node_modules"],
+  testEnvironment: "jsdom",
 };

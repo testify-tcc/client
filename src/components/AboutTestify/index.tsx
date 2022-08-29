@@ -1,10 +1,15 @@
 import "./AboutTestify.scss";
 
 import { Box } from "@chakra-ui/react";
+import classNames from "classnames";
 
-export function AboutTestify() {
+type Props = {
+  className?: string;
+};
+
+export function AboutTestify({ className }: Props) {
   return (
-    <Box className="about-testify-container">
+    <Box className={classNames("about-testify-container", className)}>
       <Box as="h1" className="about-testify-title">
         Testify
       </Box>
