@@ -18,7 +18,7 @@ import { useCallback } from "react";
 type Props = {
   isOpen: boolean;
   exercises: Exercise[];
-  selectedExerciseId: ExerciseIds;
+  selectedExerciseId: string;
   onOpenPanelButtonClick: () => void;
   onClosePanelButtonClick: () => void;
 };
