@@ -18,7 +18,7 @@ export const theme = extendTheme({
     [FontFamilies.OPEN_SANS]: `"Open Sans", sans-serif`,
   },
   colors: {
-    [Colors.PRIMARY]: "#35bab8",
+    [Colors.PRIMARY]: "#2DA7A5",
     [Colors.SECONDARY]: "#dc9934",
     [Colors.WHITE]: "#f7f7f7",
     [Colors.BLACK]: "#272727",
