@@ -9,7 +9,6 @@ import {
   TabPanel,
   TabPanels,
   Tabs,
-  Text,
 } from "@chakra-ui/react";
 import { Colors, FontSizes } from "src/theme";
 import { useCallback, useEffect, useState } from "react";
@@ -103,13 +102,17 @@ export function ExerciseRenderer({ exercise }: Props) {
       </Box>
       <Box className="exercise-content-container-wrapper">
         <Box className="exercise-content-container">
-          <Text className="exercise-title" fontSize={FontSizes.HEADING1}>
+          <Box as="h1" className="exercise-title" fontSize={FontSizes.HEADING1}>
             {exercise.name}
-          </Text>
+          </Box>
           {exercise.description && (
-            <Text className="exercise-description" fontSize={FontSizes.TEXT}>
+            <Box
+              as="p"
+              className="exercise-description"
+              fontSize={FontSizes.TEXT}
+            >
               {exercise.description}
-            </Text>
+            </Box>
           )}
           {files.length && (
             <Tabs className="exercise-files">
