@@ -8,7 +8,7 @@ import { exercises } from "./exercises";
 import { useToggle } from "src/hooks/useToggle";
 
 export function Exercises() {
-  const [isPanelOpen, toggleIsPanelOpen] = useToggle(false);
+  const { value: isPanelOpen, toggle: toggleIsPanelOpen } = useToggle(false);
 
   return (
     <DefaultLayout>
