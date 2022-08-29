@@ -10,6 +10,7 @@ describe("ExercisesPanel", () => {
         selectedExerciseId="dummy"
         onClosePanelButtonClick={jest.fn}
         onOpenPanelButtonClick={jest.fn}
+        onExerciseItemClick={jest.fn}
       />,
     );
   });

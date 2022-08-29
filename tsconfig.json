@@ -15,8 +15,10 @@
     "baseUrl": ".",
     "paths": {
       "src/*": ["./src/*"],
-      "components/*": ["./src/components/*"]
+      "components/*": ["./src/components/*"],
+      "test/*": ["./test/*"]
     }
   },
-  "include": ["src/**/*", "test/**/*"]
+  "include": ["src/**/*", "test/**/*"],
+  "exclude": ["node_modules"]
 }

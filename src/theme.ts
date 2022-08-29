@@ -12,6 +12,13 @@ export enum Colors {
   BLACK = "black",
 }
 
+export enum FontSizes {
+  HEADING1 = "5xl",
+  HEADING2 = "3xl",
+  TEXT = "xl",
+  TEXT_SMALL = "md",
+}
+
 export const theme = extendTheme({
   fonts: {
     [FontFamilies.COMFORTAA]: `"Comfortaa", cursive`,

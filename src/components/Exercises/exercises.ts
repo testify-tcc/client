@@ -1,16 +1,4 @@
-import { Exercise, ExerciseIds } from "src/models/Exercises.models";
+import { Exercise } from "src/models/Exercises.models";
+import SampleExercise from "./exercises/sampleExercise";
 
-export const exercises: Exercise[] = [
-  {
-    id: ExerciseIds.SAMPLE,
-    name: "Sample",
-  },
-  {
-    id: ExerciseIds.SPECIFICATION_BASED_TESTING,
-    name: "Specification-based Testing",
-  },
-  {
-    id: ExerciseIds.TEST_DRIVEN_DEVELOPMENT,
-    name: "Test-Driven Development",
-  },
-];
+export const exercises: Exercise[] = [SampleExercise];
