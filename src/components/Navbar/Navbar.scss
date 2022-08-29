@@ -1,0 +1,16 @@
+.navbar-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 100%;
+  padding: 10px 45px;
+  gap: 45px;
+}
+
+.navbar-platform-name {
+  font-size: 46px;
+}
+
+.navbar-section {
+  font-size: 22px;
+}
