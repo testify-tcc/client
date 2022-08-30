@@ -1,6 +1,6 @@
 import { Exercise, ExerciseIds } from "src/models/Exercises.models";
 
-import { ExerciseFile } from "src/models/ExerciseFile.models";
+import { ExerciseFileSchema } from "src/models/ExerciseFile.models";
 import { TestingEnvironment } from "src/models/TestingEnvironments.models";
 
 const codeFileContent = `
@@ -19,7 +19,7 @@ const testingFileContent = `
 const { sum } = require('./sample.js');
 
 test('should return proper result', () => {
-  expect(sum(1, 1)).toBe(2);
+  expect().toBe();
 });
 `.trim();
 
@@ -30,19 +30,19 @@ const exercise: Exercise = {
   availableTestingEnvironments: [TestingEnvironment.JAVASCRIPT_JEST],
   description:
     "This is a sample exercise for you to get used to the platform. Write a simple test file (sample.test.js) to test the function sum.",
-  getFiles: (testingEnvironment) => {
+  getFileSchemas: (testingEnvironment) => {
     const filesBasedOnTestingEnvironment: Record<
       TestingEnvironment,
-      ExerciseFile[]
+      ExerciseFileSchema[]
     > = {
       [TestingEnvironment.JAVASCRIPT_JEST]: [
         {
           fileName: "sample.js",
-          content: codeFileContent,
+          initialContent: codeFileContent,
         },
         {
           fileName: "sample.test.js",
-          content: testingFileContent,
+          initialContent: testingFileContent,
         },
       ],
     };

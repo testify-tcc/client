@@ -1,4 +1,4 @@
-import { ExerciseFile } from "./ExerciseFile.models";
+import { ExerciseFileSchema } from "./ExerciseFile.models";
 import { TestingEnvironment } from "./TestingEnvironments.models";
 
 export enum ExerciseIds {
@@ -13,5 +13,7 @@ export type Exercise = {
   description?: string;
   defaultTestingEnvironment: TestingEnvironment;
   availableTestingEnvironments: TestingEnvironment[];
-  getFiles: (testingEnvironment: TestingEnvironment) => ExerciseFile[];
+  getFileSchemas: (
+    testingEnvironment: TestingEnvironment,
+  ) => ExerciseFileSchema[];
 };

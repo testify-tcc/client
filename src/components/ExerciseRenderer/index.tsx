@@ -11,6 +11,10 @@ import {
   Tabs,
 } from "@chakra-ui/react";
 import { Colors, FontSizes } from "src/theme";
+import {
+  ExerciseFileContents,
+  ExerciseFileSchema,
+} from "src/models/ExerciseFile.models";
 import { useCallback, useEffect, useState } from "react";
 
 import { CodeEditor } from "../CodeEditor";
@@ -18,6 +22,7 @@ import { Exercise } from "src/models/Exercises.models";
 import { ExerciseRendererAriaLabels } from "./ExerciseRenderer.aria.labels";
 import { ExerciseRendererLabels } from "./ExerciseRenderer.labels";
 import { ExerciseUtils } from "src/utils/Exercises.utils";
+import { RunnerFacade } from "src/resources/RunnerFacade";
 import { TestingEnvironment } from "src/models/TestingEnvironments.models";
 import { TestingEnvironmentUtils } from "src/utils/TestingEnvironment.utils";
 
@@ -25,17 +30,16 @@ type Props = {
   exercise: Exercise;
 };
 
-type FileContents = Record<string, string>;
-
 export function ExerciseRenderer({ exercise }: Props) {
-  const [output] = useState("");
+  const [output, setOutput] = useState("");
+  const [isTestRunning, setIsTestRunning] = useState(false);
   const [testingEnvironment, setTestingEnvironment] = useState(
     exercise.defaultTestingEnvironment,
   );
-  const [files, setFiles] = useState(
-    exercise.getFiles(exercise.defaultTestingEnvironment),
+  const [fileSchemas, setFileSchemas] = useState<ExerciseFileSchema[]>(
+    exercise.getFileSchemas(exercise.defaultTestingEnvironment),
   );
-  const [fileContents, setFileContents] = useState<FileContents>({});
+  const [fileContents, setFileContents] = useState<ExerciseFileContents>({});
 
   const getCodeEditorLanguage = useCallback(() => {
     return ExerciseUtils.getLanguageFromTestingEnvironment(testingEnvironment);
@@ -56,16 +60,37 @@ export function ExerciseRenderer({ exercise }: Props) {
     setTestingEnvironment(testingEnvironment);
   };
 
+  const getProcessedOutput = useCallback(() => {
+    return output
+      .split("\n")
+      .filter((str) => str)
+      .map((str, idx) => (
+        <>
+          <span>{str}</span>
+          {idx !== output.length - 1 ? <br /> : null}
+        </>
+      ));
+  }, [output]);
+
+  const runTest = useCallback(async () => {
+    setIsTestRunning(true);
+    const testOutput = await RunnerFacade.runTestAndGetOutput(
+      ExerciseUtils.createFileList(fileSchemas, fileContents),
+    );
+    setOutput(testOutput);
+    setIsTestRunning(false);
+  }, [fileSchemas, fileContents]);
+
   useEffect(() => {
-    if (files) {
-      const initialFileContents: FileContents = {};
-      files.forEach((file) => {
-        initialFileContents[file.fileName] = file.content;
+    if (fileSchemas) {
+      const initialFileContents: ExerciseFileContents = {};
+      fileSchemas.forEach((fileSchema) => {
+        initialFileContents[fileSchema.fileName] = fileSchema.initialContent;
       });
       setFileContents(initialFileContents);
-      setFiles(files);
+      setFileSchemas(fileSchemas);
     }
-  }, [files]);
+  }, [fileSchemas]);
 
   return (
     <Box className="exercise-container">
@@ -96,6 +121,8 @@ export function ExerciseRenderer({ exercise }: Props) {
           className="exercise-run-test-button"
           colorScheme={Colors.PRIMARY}
           loadingText={ExerciseRendererLabels.RUN_TEST_BUTTON_LOADING}
+          isLoading={isTestRunning}
+          onClick={runTest}
         >
           {ExerciseRendererLabels.RUN_TEST_BUTTON}
         </Button>
@@ -114,16 +141,16 @@ export function ExerciseRenderer({ exercise }: Props) {
               {exercise.description}
             </Box>
           )}
-          {files.length && (
+          {fileSchemas.length && (
             <Tabs className="exercise-files">
               <TabList className="exercise-file-names-list">
-                {files.map((file) => (
+                {fileSchemas.map((fileSchema) => (
                   <Tab
-                    key={file.fileName}
+                    key={fileSchema.fileName}
                     className="exercise-file-name"
                     fontSize={FontSizes.TEXT}
                   >
-                    {file.fileName}
+                    {fileSchema.fileName}
                   </Tab>
                 ))}
                 {output && (
@@ -133,18 +160,21 @@ export function ExerciseRenderer({ exercise }: Props) {
                 )}
               </TabList>
               <TabPanels className="exercise-file-contents">
-                {files.map((file) => (
+                {fileSchemas.map((fileSchema) => (
                   <TabPanel
-                    key={file.fileName}
+                    key={fileSchema.fileName}
                     className="exercise-file-content"
                     data-color-mode="dark"
                   >
                     <CodeEditor
                       language={getCodeEditorLanguage()}
                       className="exercise-file-editor"
-                      value={fileContents[file.fileName]}
+                      value={fileContents[fileSchema.fileName]}
                       onChange={(fileContent) => {
-                        handleFileContentChange(file.fileName, fileContent);
+                        handleFileContentChange(
+                          fileSchema.fileName,
+                          fileContent,
+                        );
                       }}
                     />
                   </TabPanel>
@@ -155,7 +185,7 @@ export function ExerciseRenderer({ exercise }: Props) {
                       className="exercise-output-text"
                       aria-label={ExerciseRendererAriaLabels.OUTPUT_TEXT}
                     >
-                      {output}
+                      {getProcessedOutput()}
                     </Box>
                   </TabPanel>
                 )}
