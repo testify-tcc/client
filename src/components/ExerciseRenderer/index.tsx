@@ -25,6 +25,7 @@ import { ExerciseUtils } from "src/utils/Exercises.utils";
 import { RunnerFacade } from "src/resources/RunnerFacade";
 import { TestingEnvironment } from "src/models/TestingEnvironments.models";
 import { TestingEnvironmentUtils } from "src/utils/TestingEnvironment.utils";
+import { useEffectOnlyOnDependenciesUpdate } from "src/hooks/useEffectOnlyOnDependenciesUpdate";
 
 type Props = {
   exercise: Exercise;
@@ -32,6 +33,7 @@ type Props = {
 
 export function ExerciseRenderer({ exercise }: Props) {
   const [output, setOutput] = useState("");
+  const [tabIndex, setTabIndex] = useState(0);
   const [isTestRunning, setIsTestRunning] = useState(false);
   const [testingEnvironment, setTestingEnvironment] = useState(
     exercise.defaultTestingEnvironment,
@@ -74,23 +76,31 @@ export function ExerciseRenderer({ exercise }: Props) {
 
   const runTest = useCallback(async () => {
     setIsTestRunning(true);
-    const testOutput = await RunnerFacade.runTestAndGetOutput(
-      ExerciseUtils.createFileList(fileSchemas, fileContents),
-    );
-    setOutput(testOutput);
+    const { output } = await RunnerFacade.runTestAndGetOutput({
+      testingEnvironment,
+      testCommand: exercise.getTestCommand(testingEnvironment),
+      files: ExerciseUtils.createFileList(fileSchemas, fileContents),
+    });
+    setOutput(output);
     setIsTestRunning(false);
-  }, [fileSchemas, fileContents]);
+  }, [testingEnvironment, exercise, fileSchemas, fileContents]);
 
   useEffect(() => {
     if (fileSchemas) {
       const initialFileContents: ExerciseFileContents = {};
       fileSchemas.forEach((fileSchema) => {
-        initialFileContents[fileSchema.fileName] = fileSchema.initialContent;
+        initialFileContents[fileSchema.name] = fileSchema.initialContent;
       });
       setFileContents(initialFileContents);
       setFileSchemas(fileSchemas);
     }
   }, [fileSchemas]);
+
+  useEffectOnlyOnDependenciesUpdate(() => {
+    if (output) {
+      setTabIndex(fileSchemas.length);
+    }
+  }, [output]);
 
   return (
     <Box className="exercise-container">
@@ -142,15 +152,19 @@ export function ExerciseRenderer({ exercise }: Props) {
             </Box>
           )}
           {fileSchemas.length && (
-            <Tabs className="exercise-files">
+            <Tabs
+              index={tabIndex}
+              className="exercise-files"
+              onChange={(index) => setTabIndex(index)}
+            >
               <TabList className="exercise-file-names-list">
                 {fileSchemas.map((fileSchema) => (
                   <Tab
-                    key={fileSchema.fileName}
+                    key={fileSchema.name}
                     className="exercise-file-name"
                     fontSize={FontSizes.TEXT}
                   >
-                    {fileSchema.fileName}
+                    {fileSchema.name}
                   </Tab>
                 ))}
                 {output && (
@@ -162,19 +176,16 @@ export function ExerciseRenderer({ exercise }: Props) {
               <TabPanels className="exercise-file-contents">
                 {fileSchemas.map((fileSchema) => (
                   <TabPanel
-                    key={fileSchema.fileName}
+                    key={fileSchema.name}
                     className="exercise-file-content"
                     data-color-mode="dark"
                   >
                     <CodeEditor
                       language={getCodeEditorLanguage()}
                       className="exercise-file-editor"
-                      value={fileContents[fileSchema.fileName]}
+                      value={fileContents[fileSchema.name]}
                       onChange={(fileContent) => {
-                        handleFileContentChange(
-                          fileSchema.fileName,
-                          fileContent,
-                        );
+                        handleFileContentChange(fileSchema.name, fileContent);
                       }}
                     />
                   </TabPanel>

@@ -1,27 +1,11 @@
 import { Exercise, ExerciseIds } from "src/models/Exercises.models";
+import {
+  javascriptJestCodeFileContent,
+  javascriptJestTestingFileContent,
+} from "./sampleExercise.contents";
 
 import { ExerciseFileSchema } from "src/models/ExerciseFile.models";
 import { TestingEnvironment } from "src/models/TestingEnvironments.models";
-
-const codeFileContent = `
-'use strict';
-
-function sum(a, b) {
-  return a + b;
-}
-
-module.exports = { sum };
-`.trim();
-
-const testingFileContent = `
-'use strict';
-
-const { sum } = require('./sample.js');
-
-test('should return proper result', () => {
-  expect().toBe();
-});
-`.trim();
 
 const exercise: Exercise = {
   id: ExerciseIds.SAMPLE,
@@ -30,6 +14,15 @@ const exercise: Exercise = {
   availableTestingEnvironments: [TestingEnvironment.JAVASCRIPT_JEST],
   description:
     "This is a sample exercise for you to get used to the platform. Write a simple test file (sample.test.js) to test the function sum.",
+  getTestCommand: (testingEnvironment) => {
+    const testCommandsBasedOnTestingEnvironment: Record<
+      TestingEnvironment,
+      string
+    > = {
+      [TestingEnvironment.JAVASCRIPT_JEST]: "jest",
+    };
+    return testCommandsBasedOnTestingEnvironment[testingEnvironment];
+  },
   getFileSchemas: (testingEnvironment) => {
     const filesBasedOnTestingEnvironment: Record<
       TestingEnvironment,
@@ -37,12 +30,12 @@ const exercise: Exercise = {
     > = {
       [TestingEnvironment.JAVASCRIPT_JEST]: [
         {
-          fileName: "sample.js",
-          initialContent: codeFileContent,
+          name: "sample.js",
+          initialContent: javascriptJestCodeFileContent,
         },
         {
-          fileName: "sample.test.js",
-          initialContent: testingFileContent,
+          name: "sample.test.js",
+          initialContent: javascriptJestTestingFileContent,
         },
       ],
     };

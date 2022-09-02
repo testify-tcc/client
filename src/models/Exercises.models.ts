@@ -3,8 +3,6 @@ import { TestingEnvironment } from "./TestingEnvironments.models";
 
 export enum ExerciseIds {
   SAMPLE = "sample",
-  SPECIFICATION_BASED_TESTING = "specification-based-testing",
-  TEST_DRIVEN_DEVELOPMENT = "test-driven-development",
 }
 
 export type Exercise = {
@@ -13,6 +11,7 @@ export type Exercise = {
   description?: string;
   defaultTestingEnvironment: TestingEnvironment;
   availableTestingEnvironments: TestingEnvironment[];
+  getTestCommand: (testingEnvironment: TestingEnvironment) => string;
   getFileSchemas: (
     testingEnvironment: TestingEnvironment,
   ) => ExerciseFileSchema[];

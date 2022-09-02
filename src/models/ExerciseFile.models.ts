@@ -1,5 +1,5 @@
 type ExerciseFileCommonAttributes = {
-  fileName: string;
+  name: string;
 };
 
 export type ExerciseFileSchema = ExerciseFileCommonAttributes & {

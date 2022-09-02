@@ -1,12 +1,16 @@
-import { ExerciseFile } from "src/models/ExerciseFile.models";
+import {
+  RunRequestBody,
+  RunRequestResponse,
+} from "src/models/RunnerFacade.models";
+
 import axios from "axios";
 import { env } from "src/env";
 
 export class RunnerFacade {
   public static async runTestAndGetOutput(
-    files: ExerciseFile[],
-  ): Promise<string> {
-    const { data } = await axios.post(`${env.SERVER_ENDPOINT}/run`, { files });
+    requestBody: RunRequestBody,
+  ): Promise<RunRequestResponse> {
+    const { data } = await axios.post(env.SERVER_ENDPOINT, requestBody);
     return data;
   }
 }

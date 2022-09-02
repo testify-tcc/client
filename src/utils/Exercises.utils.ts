@@ -27,9 +27,9 @@ export class ExerciseUtils {
     fileSchemas: ExerciseFileSchema[],
     fileContents: ExerciseFileContents,
   ): ExerciseFile[] {
-    return fileSchemas.map(({ fileName }) => ({
-      fileName,
-      content: fileContents[fileName],
+    return fileSchemas.map(({ name }) => ({
+      name,
+      content: fileContents[name],
     }));
   }
 }
