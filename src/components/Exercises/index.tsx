@@ -2,34 +2,36 @@ import "./Exercises.scss";
 
 import { Box } from "@chakra-ui/react";
 import { DefaultLayout } from "components/layouts/DefaultLayout";
-import { Exercise } from "src/models/Exercises.models";
+import { ExerciseDefinition } from "src/models/Exercises.models";
 import { ExerciseRenderer } from "../ExerciseRenderer";
 import { ExercisesPanel } from "../ExercisesPanel";
-import { exercises } from "./exercises";
+import { exerciseDefinitions } from "src/exercises";
 import { useState } from "react";
 import { useToggle } from "src/hooks/useToggle";
 
 export function Exercises() {
-  const [selectedExercise, setSelectedExercise] = useState<Exercise>(
-    exercises[0],
-  );
+  const [selectedExerciseDefinition, setSelectedExerciseDefinition] =
+    useState<ExerciseDefinition>(exerciseDefinitions[0]);
   const { value: isPanelOpen, toggle: toggleIsPanelOpen } = useToggle(true);
 
-  const handleExerciseItemClick = (exercise: Exercise) =>
-    setSelectedExercise(exercise);
+  const handleExerciseItemClick = (exerciseDefinition: ExerciseDefinition) => {
+    setSelectedExerciseDefinition(exerciseDefinition);
+  };
 
   return (
     <DefaultLayout>
       <Box className="exercises-container">
         <ExercisesPanel
           isOpen={isPanelOpen}
-          exercises={exercises}
+          exerciseDefinitions={exerciseDefinitions}
           onOpenPanelButtonClick={toggleIsPanelOpen}
           onClosePanelButtonClick={toggleIsPanelOpen}
-          selectedExerciseId={selectedExercise?.id}
+          selectedExerciseId={selectedExerciseDefinition.getId()}
           onExerciseItemClick={handleExerciseItemClick}
         />
-        {selectedExercise && <ExerciseRenderer exercise={selectedExercise} />}
+        {selectedExerciseDefinition && (
+          <ExerciseRenderer exerciseDefinition={selectedExerciseDefinition} />
+        )}
       </Box>
     </DefaultLayout>
   );

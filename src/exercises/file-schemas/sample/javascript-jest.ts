@@ -1,4 +1,9 @@
-export const javascriptJestCodeFileContent = `
+export enum FileNames {
+  CODE = "sample.js",
+  TEST = "sample.test.js",
+}
+
+export const codeFileContent = `
 'use strict';
 
 function sum(a, b) {
@@ -8,7 +13,7 @@ function sum(a, b) {
 module.exports = { sum };
 `.trim();
 
-export const javascriptJestTestingFileContent = `
+export const testingFileContent = `
 'use strict';
 
 const { sum } = require('./sample.js');

@@ -6,7 +6,7 @@ describe("ExercisesPanel", () => {
     TestRenderer.create(
       <ExercisesPanel
         isOpen={false}
-        exercises={[]}
+        exerciseDefinitions={[]}
         selectedExerciseId="dummy"
         onClosePanelButtonClick={jest.fn}
         onOpenPanelButtonClick={jest.fn}

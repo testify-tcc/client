@@ -1,11 +1,11 @@
 import { Colors, FontSizes } from "src/theme";
 
 import { Button } from "@chakra-ui/react";
-import { Exercise } from "src/models/Exercises.models";
+import { ExerciseDefinition } from "src/models/Exercises.models";
 import { useCallback } from "react";
 
 type Props = {
-  exercise: Exercise;
+  exerciseDefinition: ExerciseDefinition;
   isSelected: boolean;
   onClick: () => void;
 };
@@ -22,7 +22,7 @@ export function ExerciseItemButton(props: Props) {
       onClick={props.onClick}
       fontSize={FontSizes.TEXT}
     >
-      {props.exercise.name}
+      {props.exerciseDefinition.getTitle()}
     </Button>
   );
 }

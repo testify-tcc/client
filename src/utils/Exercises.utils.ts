@@ -1,6 +1,6 @@
 import {
   ExerciseFile,
-  ExerciseFileContents,
+  ExerciseFileContentMap,
   ExerciseFileSchema,
 } from "src/models/ExerciseFile.models";
 import {
@@ -25,7 +25,7 @@ export class ExerciseUtils {
 
   public static createFileList(
     fileSchemas: ExerciseFileSchema[],
-    fileContents: ExerciseFileContents,
+    fileContents: ExerciseFileContentMap,
   ): ExerciseFile[] {
     return fileSchemas.map(({ name }) => ({
       name,

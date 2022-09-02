@@ -6,8 +6,10 @@ export type ExerciseFileSchema = ExerciseFileCommonAttributes & {
   initialContent: string;
 };
 
+export type ExerciseFileSchemas = Array<ExerciseFileSchema>;
+
 export type ExerciseFile = ExerciseFileCommonAttributes & {
   content: string;
 };
 
-export type ExerciseFileContents = Record<string, string>;
+export type ExerciseFileContentMap = Record<string, string>;

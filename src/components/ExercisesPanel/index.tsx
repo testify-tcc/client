@@ -2,7 +2,7 @@ import "./ExercisesPanel.scss";
 
 import { Box, IconButton, ListItem, UnorderedList } from "@chakra-ui/react";
 import { CloseIcon, HamburgerIcon } from "@chakra-ui/icons";
-import { Exercise, ExerciseIds } from "src/models/Exercises.models";
+import { ExerciseDefinition, ExerciseIds } from "src/models/Exercises.models";
 
 import { Colors } from "src/theme";
 import { ExerciseItemButton } from "../ExerciseItemButton";
@@ -12,11 +12,11 @@ import { useCallback } from "react";
 
 type Props = {
   isOpen: boolean;
-  exercises: Exercise[];
+  exerciseDefinitions: ExerciseDefinition[];
   selectedExerciseId?: string;
   onOpenPanelButtonClick: () => void;
   onClosePanelButtonClick: () => void;
-  onExerciseItemClick: (exercise: Exercise) => void;
+  onExerciseItemClick: (exercise: ExerciseDefinition) => void;
 };
 
 export function ExercisesPanel(props: Props) {
@@ -55,13 +55,16 @@ export function ExercisesPanel(props: Props) {
         listStyleType="none"
         marginInlineStart="none"
       >
-        {props.exercises.map((exercise) => {
+        {props.exerciseDefinitions.map((exerciseDefinition) => {
           return (
-            <ListItem className="exercises-panel-item" key={exercise.id}>
+            <ListItem
+              className="exercises-panel-item"
+              key={exerciseDefinition.getId()}
+            >
               <ExerciseItemButton
-                exercise={exercise}
-                isSelected={isExerciseItemSelected(exercise.id)}
-                onClick={() => props.onExerciseItemClick(exercise)}
+                exerciseDefinition={exerciseDefinition}
+                isSelected={isExerciseItemSelected(exerciseDefinition.getId())}
+                onClick={() => props.onExerciseItemClick(exerciseDefinition)}
               />
             </ListItem>
           );

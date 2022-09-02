@@ -12,13 +12,13 @@ import {
 } from "@chakra-ui/react";
 import { Colors, FontSizes } from "src/theme";
 import {
-  ExerciseFileContents,
+  ExerciseFileContentMap,
   ExerciseFileSchema,
 } from "src/models/ExerciseFile.models";
 import { useCallback, useEffect, useState } from "react";
 
 import { CodeEditor } from "../CodeEditor";
-import { Exercise } from "src/models/Exercises.models";
+import { ExerciseDefinition } from "src/models/Exercises.models";
 import { ExerciseRendererAriaLabels } from "./ExerciseRenderer.aria.labels";
 import { ExerciseRendererLabels } from "./ExerciseRenderer.labels";
 import { ExerciseUtils } from "src/utils/Exercises.utils";
@@ -28,20 +28,26 @@ import { TestingEnvironmentUtils } from "src/utils/TestingEnvironment.utils";
 import { useEffectOnlyOnDependenciesUpdate } from "src/hooks/useEffectOnlyOnDependenciesUpdate";
 
 type Props = {
-  exercise: Exercise;
+  exerciseDefinition: ExerciseDefinition;
 };
 
-export function ExerciseRenderer({ exercise }: Props) {
+export function ExerciseRenderer({ exerciseDefinition }: Props) {
   const [output, setOutput] = useState("");
   const [tabIndex, setTabIndex] = useState(0);
   const [isTestRunning, setIsTestRunning] = useState(false);
   const [testingEnvironment, setTestingEnvironment] = useState(
-    exercise.defaultTestingEnvironment,
+    exerciseDefinition.getDefaultTestingEnvironment(),
   );
   const [fileSchemas, setFileSchemas] = useState<ExerciseFileSchema[]>(
-    exercise.getFileSchemas(exercise.defaultTestingEnvironment),
+    exerciseDefinition.getFileSchemas(
+      exerciseDefinition.getDefaultTestingEnvironment(),
+    ),
   );
-  const [fileContents, setFileContents] = useState<ExerciseFileContents>({});
+  const [fileContents, setFileContents] = useState<ExerciseFileContentMap>({});
+
+  const getOutputTabIndex = useCallback(() => {
+    return exerciseDefinition.getNumberOfFiles(testingEnvironment);
+  }, [exerciseDefinition, testingEnvironment]);
 
   const getCodeEditorLanguage = useCallback(() => {
     return ExerciseUtils.getLanguageFromTestingEnvironment(testingEnvironment);
@@ -78,16 +84,16 @@ export function ExerciseRenderer({ exercise }: Props) {
     setIsTestRunning(true);
     const { output } = await RunnerFacade.runTestAndGetOutput({
       testingEnvironment,
-      testCommand: exercise.getTestCommand(testingEnvironment),
+      testCommand: exerciseDefinition.getTestCommand(testingEnvironment),
       files: ExerciseUtils.createFileList(fileSchemas, fileContents),
     });
     setOutput(output);
     setIsTestRunning(false);
-  }, [testingEnvironment, exercise, fileSchemas, fileContents]);
+  }, [testingEnvironment, exerciseDefinition, fileSchemas, fileContents]);
 
   useEffect(() => {
     if (fileSchemas) {
-      const initialFileContents: ExerciseFileContents = {};
+      const initialFileContents: ExerciseFileContentMap = {};
       fileSchemas.forEach((fileSchema) => {
         initialFileContents[fileSchema.name] = fileSchema.initialContent;
       });
@@ -98,7 +104,7 @@ export function ExerciseRenderer({ exercise }: Props) {
 
   useEffectOnlyOnDependenciesUpdate(() => {
     if (output) {
-      setTabIndex(fileSchemas.length);
+      setTabIndex(getOutputTabIndex());
     }
   }, [output]);
 
@@ -115,15 +121,17 @@ export function ExerciseRenderer({ exercise }: Props) {
             )
           }
         >
-          {exercise.availableTestingEnvironments.map((testingEnvironment) => {
-            return (
-              <option key={testingEnvironment} value={testingEnvironment}>
-                {TestingEnvironmentUtils.getTestingEnvironmentLabel(
-                  testingEnvironment,
-                )}
-              </option>
-            );
-          })}
+          {exerciseDefinition
+            .getAvailableTestingEnvironments()
+            .map((testingEnvironment) => {
+              return (
+                <option key={testingEnvironment} value={testingEnvironment}>
+                  {TestingEnvironmentUtils.getTestingEnvironmentLabel(
+                    testingEnvironment,
+                  )}
+                </option>
+              );
+            })}
         </Select>
         <Button
           variant="solid"
@@ -140,15 +148,15 @@ export function ExerciseRenderer({ exercise }: Props) {
       <Box className="exercise-content-container-wrapper">
         <Box className="exercise-content-container">
           <Box as="h1" className="exercise-title" fontSize={FontSizes.HEADING1}>
-            {exercise.name}
+            {exerciseDefinition.getTitle()}
           </Box>
-          {exercise.description && (
+          {exerciseDefinition.getDescription() && (
             <Box
               as="p"
               className="exercise-description"
               fontSize={FontSizes.TEXT}
             >
-              {exercise.description}
+              {exerciseDefinition.getDescription()}
             </Box>
           )}
           {fileSchemas.length && (

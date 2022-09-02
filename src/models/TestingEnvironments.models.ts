@@ -5,3 +5,7 @@ export enum TestingEnvironment {
 export enum TestingEnvironmentLanguages {
   JAVASCRIPT = "javascript",
 }
+
+export enum TestingEnvironmentTestCommands {
+  JAVASCRIPT_JEST = "jest",
+}
