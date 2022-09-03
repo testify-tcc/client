@@ -1,20 +1,18 @@
 export enum FileNames {
-  CODE = "sample.js",
-  TEST = "sample.test.js",
+  CODE = "sample.ts",
+  TEST = "sample.test.ts",
 }
 
 export const codeFileContent = `
 'use strict';
 
-function sum(a, b) {
+export function sum(a: number, b: number): number {
   return a + b;
 }
-
-module.exports = { sum };
 `.trim();
 
 export const testingFileContent = `
-const { sum } = require('./sample.js');
+import { sum } from './sample';
 
 'use strict';
 

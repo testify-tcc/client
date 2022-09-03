@@ -26,8 +26,8 @@ export class ExerciseDefinition {
   private readonly title: string;
   private readonly description: string | null;
   private readonly testingEnvironments: TestingEnvironment[];
-  protected readonly fileSchemasMap: ExerciseDefinitionFileSchemasMap;
-  protected readonly testCommandsMap: ExerciseDefinitionTestCommandsMap;
+  private readonly fileSchemasMap: ExerciseDefinitionFileSchemasMap;
+  private readonly testCommandsMap: ExerciseDefinitionTestCommandsMap;
 
   constructor(params: ExerciseDefinitionParams) {
     if (params.testingEnvironments.length < 1) {

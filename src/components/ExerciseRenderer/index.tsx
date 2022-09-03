@@ -92,6 +92,10 @@ export function ExerciseRenderer({ exerciseDefinition }: Props) {
   }, [testingEnvironment, exerciseDefinition, fileSchemas, fileContents]);
 
   useEffect(() => {
+    setFileSchemas(exerciseDefinition.getFileSchemas(testingEnvironment));
+  }, [exerciseDefinition, testingEnvironment]);
+
+  useEffect(() => {
     if (fileSchemas) {
       const initialFileContents: ExerciseFileContentMap = {};
       fileSchemas.forEach((fileSchema) => {

@@ -12,7 +12,10 @@ const exercise = new ExerciseDefinition({
   id: ExerciseDefinitionIds.SAMPLE,
   title: SampleExerciseLabels.TITLE,
   description: SampleExerciseLabels.DESCRIPTION,
-  testingEnvironments: [TestingEnvironment.JAVASCRIPT_JEST],
+  testingEnvironments: [
+    TestingEnvironment.JAVASCRIPT_JEST,
+    TestingEnvironment.TYPESCRIPT_JEST,
+  ],
   fileSchemasMap,
   testCommandsMap,
 });

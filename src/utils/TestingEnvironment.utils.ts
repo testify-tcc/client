@@ -8,6 +8,8 @@ export class TestingEnvironmentUtils {
   > = {
     [TestingEnvironment.JAVASCRIPT_JEST]:
       TestingEnvironmentLabel.JAVASCRIPT_JEST,
+    [TestingEnvironment.TYPESCRIPT_JEST]:
+      TestingEnvironmentLabel.TYPESCRIPT_JEST,
   };
 
   public static getTestingEnvironmentLabel(
