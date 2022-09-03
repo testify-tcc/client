@@ -2,7 +2,10 @@ import "./ExercisesPanel.scss";
 
 import { Box, IconButton, ListItem, UnorderedList } from "@chakra-ui/react";
 import { CloseIcon, HamburgerIcon } from "@chakra-ui/icons";
-import { ExerciseDefinition, ExerciseIds } from "src/models/Exercises.models";
+import {
+  ExerciseDefinition,
+  ExerciseDefinitionIds,
+} from "src/models/Exercises.models";
 
 import { Colors } from "src/theme";
 import { ExerciseItemButton } from "../ExerciseItemButton";
@@ -13,7 +16,7 @@ import { useCallback } from "react";
 type Props = {
   isOpen: boolean;
   exerciseDefinitions: ExerciseDefinition[];
-  selectedExerciseId?: string;
+  selectedExerciseDefinitionId?: string;
   onOpenPanelButtonClick: () => void;
   onClosePanelButtonClick: () => void;
   onExerciseItemClick: (exercise: ExerciseDefinition) => void;
@@ -21,8 +24,9 @@ type Props = {
 
 export function ExercisesPanel(props: Props) {
   const isExerciseItemSelected = useCallback(
-    (exerciseId: ExerciseIds) => exerciseId === props.selectedExerciseId,
-    [props.selectedExerciseId],
+    (exerciseDefinitionId: ExerciseDefinitionIds) =>
+      exerciseDefinitionId === props.selectedExerciseDefinitionId,
+    [props.selectedExerciseDefinitionId],
   );
 
   if (!props.isOpen) {

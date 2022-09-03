@@ -26,7 +26,7 @@ export function Exercises() {
           exerciseDefinitions={exerciseDefinitions}
           onOpenPanelButtonClick={toggleIsPanelOpen}
           onClosePanelButtonClick={toggleIsPanelOpen}
-          selectedExerciseId={selectedExerciseDefinition.getId()}
+          selectedExerciseDefinitionId={selectedExerciseDefinition.getId()}
           onExerciseItemClick={handleExerciseItemClick}
         />
         {selectedExerciseDefinition && (

@@ -1,7 +1,7 @@
 import { ExerciseFileSchemas } from "./ExerciseFile.models";
 import { TestingEnvironment } from "./TestingEnvironments.models";
 
-export enum ExerciseIds {
+export enum ExerciseDefinitionIds {
   SAMPLE = "sample",
 }
 
@@ -13,7 +13,7 @@ export type ExerciseDefinitionFileSchemasMap = Record<
 export type ExerciseDefinitionTestCommandsMap = Record<string, string>;
 
 export type ExerciseDefinitionParams = {
-  id: ExerciseIds;
+  id: ExerciseDefinitionIds;
   title: string;
   description?: string;
   testingEnvironments: TestingEnvironment[];
@@ -22,7 +22,7 @@ export type ExerciseDefinitionParams = {
 };
 
 export class ExerciseDefinition {
-  private readonly id: ExerciseIds;
+  private readonly id: ExerciseDefinitionIds;
   private readonly title: string;
   private readonly description: string | null;
   private readonly testingEnvironments: TestingEnvironment[];
@@ -44,7 +44,7 @@ export class ExerciseDefinition {
     this.testingEnvironments = params.testingEnvironments;
   }
 
-  public getId(): ExerciseIds {
+  public getId(): ExerciseDefinitionIds {
     return this.id;
   }
 
