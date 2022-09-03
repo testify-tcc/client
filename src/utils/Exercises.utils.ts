@@ -15,6 +15,8 @@ export class ExerciseUtils {
   > = {
     [TestingEnvironment.JAVASCRIPT_JEST]:
       TestingEnvironmentLanguages.JAVASCRIPT,
+    [TestingEnvironment.TYPESCRIPT_JEST]:
+      TestingEnvironmentLanguages.TYPESCRIPT,
   };
 
   public static getLanguageFromTestingEnvironment(

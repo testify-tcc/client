@@ -122,7 +122,7 @@ export function ExerciseRenderer({ exerciseDefinition }: Props) {
           }
         >
           {exerciseDefinition
-            .getAvailableTestingEnvironments()
+            .getTestingEnvironments()
             .map((testingEnvironment) => {
               return (
                 <option key={testingEnvironment} value={testingEnvironment}>

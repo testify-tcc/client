@@ -13,6 +13,7 @@ export function CodeEditor(props: CodeEditorProps) {
   const getLanguage = useCallback(() => {
     const languages: Record<TestingEnvironmentLanguages, string> = {
       [TestingEnvironmentLanguages.JAVASCRIPT]: "js",
+      [TestingEnvironmentLanguages.TYPESCRIPT]: "ts",
     };
 
     return languages[props.language];

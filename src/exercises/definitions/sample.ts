@@ -9,8 +9,7 @@ const exercise = new ExerciseDefinition({
   id: ExerciseIds.SAMPLE,
   title: SampleExerciseLabels.TITLE,
   description: SampleExerciseLabels.DESCRIPTION,
-  defaultTestingEnvironment: TestingEnvironment.JAVASCRIPT_JEST,
-  availableTestingEnvironments: [TestingEnvironment.JAVASCRIPT_JEST],
+  testingEnvironments: [TestingEnvironment.JAVASCRIPT_JEST],
   fileSchemasMap,
   testCommandsMap,
 });
