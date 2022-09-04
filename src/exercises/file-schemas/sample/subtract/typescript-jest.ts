@@ -17,6 +17,6 @@ import { subtract } from './subtract';
 'use strict';
 
 test('should return proper result', () => {
-  expect().toBe();
+  expect().toBe(1);
 });
 `.trim();

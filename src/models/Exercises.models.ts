@@ -7,6 +7,8 @@ export const ExerciseDefinitionIds = {
   SAMPLE: "sample",
   SAMPLE_SUM: `sample${EXERCISE_ID_SEPARATOR}sum`,
   SAMPLE_SUBTRACT: `sample${EXERCISE_ID_SEPARATOR}subtract`,
+  SPECIFICATION_BASED_TESTING: "specification-based-testing",
+  SPECIFICATION_BASED_TESTING_LISTING_2_2: `specification-based-testing${EXERCISE_ID_SEPARATOR}listing-2-2`,
 };
 
 export type ExerciseDefinitionFileSchemasMap = Record<
