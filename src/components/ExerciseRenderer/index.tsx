@@ -105,12 +105,14 @@ export function ExerciseRenderer({ exerciseDefinition }: Props) {
 
   useEffect(() => {
     if (fileSchemas) {
+      const initialFileEditContentDisabled: Record<string, boolean> = {};
       const initialFileContents: ExerciseFileContentMap = {};
       fileSchemas.forEach((fileSchema) => {
         initialFileContents[fileSchema.name] = fileSchema.initialContent;
+        initialFileEditContentDisabled[fileSchema.name] =
+          fileSchema.editDisabled ?? false;
       });
       setFileContents(initialFileContents);
-      setFileSchemas(fileSchemas);
     }
   }, [fileSchemas]);
 
@@ -253,6 +255,7 @@ export function ExerciseRenderer({ exerciseDefinition }: Props) {
                       data-color-mode="dark"
                     >
                       <CodeEditor
+                        disabled={fileSchema.editDisabled ?? false}
                         language={getCodeEditorLanguage(testingEnvironment)}
                         className="exercise-file-editor"
                         value={fileContents[fileSchema.name]}

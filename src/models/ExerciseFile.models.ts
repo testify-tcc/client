@@ -3,6 +3,7 @@ type ExerciseFileCommonAttributes = {
 };
 
 export type ExerciseFileSchema = ExerciseFileCommonAttributes & {
+  editDisabled?: boolean;
   initialContent: string;
 };
 

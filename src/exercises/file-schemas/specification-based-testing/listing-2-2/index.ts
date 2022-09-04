@@ -15,6 +15,7 @@ import { TestingEnvironment } from "src/models/TestingEnvironments.models";
 export const fileSchemasMap: ExerciseDefinitionFileSchemasMap = {
   [TestingEnvironment.JAVASCRIPT_JEST]: [
     {
+      editDisabled: true,
       name: JavascriptJestFileNames.CODE,
       initialContent: javascriptJestFileContent,
     },
@@ -25,6 +26,7 @@ export const fileSchemasMap: ExerciseDefinitionFileSchemasMap = {
   ],
   [TestingEnvironment.TYPESCRIPT_JEST]: [
     {
+      editDisabled: true,
       name: TypescriptJestFileNames.CODE,
       initialContent: typescriptJestFileContent,
     },

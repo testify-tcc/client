@@ -4,6 +4,7 @@ import { useCallback } from "react";
 
 export type CodeEditorProps = {
   value: string;
+  disabled: boolean;
   onChange: (value: string) => void;
   language: TestingEnvironmentLanguages;
   className?: string;
