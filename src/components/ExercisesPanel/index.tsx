@@ -1,7 +1,13 @@
 import "./ExercisesPanel.scss";
 
-import { Box, IconButton, ListItem, UnorderedList } from "@chakra-ui/react";
-import { CloseIcon, HamburgerIcon } from "@chakra-ui/icons";
+import {
+  Box,
+  IconButton,
+  ListIcon,
+  ListItem,
+  UnorderedList,
+} from "@chakra-ui/react";
+import { ChevronRightIcon, CloseIcon, HamburgerIcon } from "@chakra-ui/icons";
 import {
   ExerciseDefinition,
   ExerciseDefinitionIds,
@@ -19,7 +25,7 @@ type Props = {
   selectedExerciseDefinitionId?: string;
   onOpenPanelButtonClick: () => void;
   onClosePanelButtonClick: () => void;
-  onExerciseItemClick: (exercise: ExerciseDefinition) => void;
+  onExerciseItemClick: (exerciseDefinition: ExerciseDefinition) => void;
 };
 
 export function ExercisesPanel(props: Props) {
@@ -54,22 +60,48 @@ export function ExercisesPanel(props: Props) {
         onClick={props.onClosePanelButtonClick}
         className="exercises-panel-close-button"
       />
-      <UnorderedList
-        className="exercises-panel-list"
-        listStyleType="none"
-        marginInlineStart="none"
-      >
+      <UnorderedList className="exercises-panel-list">
         {props.exerciseDefinitions.map((exerciseDefinition) => {
           return (
             <ListItem
               className="exercises-panel-item"
               key={exerciseDefinition.getId()}
             >
+              <ListIcon as={ChevronRightIcon} color={Colors.PRIMARY} />
               <ExerciseItemButton
                 exerciseDefinition={exerciseDefinition}
+                onExerciseItemButtonClick={props.onExerciseItemClick}
                 isSelected={isExerciseItemSelected(exerciseDefinition.getId())}
-                onClick={() => props.onExerciseItemClick(exerciseDefinition)}
               />
+              {exerciseDefinition.hasSubExercises() && (
+                <UnorderedList
+                  className={classNames(
+                    "exercises-panel-list",
+                    "exercises-panel-sub-list",
+                  )}
+                >
+                  {exerciseDefinition
+                    .getSubExerciseDefinitions()
+                    .map((subExerciseDefinition) => (
+                      <ListItem
+                        className="exercises-panel-sub-item"
+                        key={subExerciseDefinition.getId()}
+                      >
+                        <ListIcon
+                          as={ChevronRightIcon}
+                          color={Colors.PRIMARY}
+                        />
+                        <ExerciseItemButton
+                          exerciseDefinition={subExerciseDefinition}
+                          onExerciseItemButtonClick={props.onExerciseItemClick}
+                          isSelected={isExerciseItemSelected(
+                            subExerciseDefinition.getId(),
+                          )}
+                        />
+                      </ListItem>
+                    ))}
+                </UnorderedList>
+              )}
             </ListItem>
           );
         })}

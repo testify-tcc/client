@@ -3,17 +3,19 @@ import "./ExerciseRenderer.scss";
 import {
   Box,
   Button,
+  ListItem,
   Select,
   Tab,
   TabList,
   TabPanel,
   TabPanels,
   Tabs,
+  UnorderedList,
 } from "@chakra-ui/react";
 import { Colors, FontSizes } from "src/theme";
 import {
   ExerciseFileContentMap,
-  ExerciseFileSchema,
+  ExerciseFileSchemas,
 } from "src/models/ExerciseFile.models";
 import { useCallback, useEffect, useState } from "react";
 
@@ -35,23 +37,20 @@ export function ExerciseRenderer({ exerciseDefinition }: Props) {
   const [output, setOutput] = useState("");
   const [tabIndex, setTabIndex] = useState(0);
   const [isTestRunning, setIsTestRunning] = useState(false);
-  const [testingEnvironment, setTestingEnvironment] = useState(
-    exerciseDefinition.getDefaultTestingEnvironment(),
-  );
-  const [fileSchemas, setFileSchemas] = useState<ExerciseFileSchema[]>(
-    exerciseDefinition.getFileSchemas(
-      exerciseDefinition.getDefaultTestingEnvironment(),
-    ),
-  );
+  const [fileSchemas, setFileSchemas] = useState<ExerciseFileSchemas>([]);
   const [fileContents, setFileContents] = useState<ExerciseFileContentMap>({});
+  const [testingEnvironment, setTestingEnvironment] =
+    useState<TestingEnvironment | null>(null);
 
   const getOutputTabIndex = useCallback(() => {
-    return exerciseDefinition.getNumberOfFiles(testingEnvironment);
+    return testingEnvironment
+      ? exerciseDefinition.getNumberOfFiles(testingEnvironment)
+      : 0;
   }, [exerciseDefinition, testingEnvironment]);
 
-  const getCodeEditorLanguage = useCallback(() => {
+  const getCodeEditorLanguage = (testingEnvironment: TestingEnvironment) => {
     return ExerciseUtils.getLanguageFromTestingEnvironment(testingEnvironment);
-  }, [testingEnvironment]);
+  };
 
   const handleFileContentChange = (fileName: string, fileContent: string) => {
     setFileContents((oldFileContents) => {
@@ -62,11 +61,13 @@ export function ExerciseRenderer({ exerciseDefinition }: Props) {
     });
   };
 
-  const handleTestingEnvironmentChange = (
-    testingEnvironment: TestingEnvironment,
-  ) => {
-    setTestingEnvironment(testingEnvironment);
-  };
+  const handleTestingEnvironmentChange = useCallback(
+    (testingEnvironment: TestingEnvironment) => {
+      setTestingEnvironment(testingEnvironment);
+      setFileSchemas(exerciseDefinition.getFileSchemas(testingEnvironment));
+    },
+    [exerciseDefinition],
+  );
 
   const getProcessedOutput = useCallback(() => {
     return output
@@ -82,18 +83,24 @@ export function ExerciseRenderer({ exerciseDefinition }: Props) {
 
   const runTest = useCallback(async () => {
     setIsTestRunning(true);
-    const { output } = await RunnerFacade.runTestAndGetOutput({
-      testingEnvironment,
-      testCommand: exerciseDefinition.getTestCommand(testingEnvironment),
-      files: ExerciseUtils.createFileList(fileSchemas, fileContents),
-    });
-    setOutput(output);
+    if (testingEnvironment) {
+      const { output } = await RunnerFacade.runTestAndGetOutput({
+        testingEnvironment,
+        testCommand: exerciseDefinition.getTestCommand(testingEnvironment),
+        files: ExerciseUtils.createFileList(fileSchemas, fileContents),
+      });
+      setOutput(output);
+    }
     setIsTestRunning(false);
   }, [testingEnvironment, exerciseDefinition, fileSchemas, fileContents]);
 
-  useEffect(() => {
-    setFileSchemas(exerciseDefinition.getFileSchemas(testingEnvironment));
-  }, [exerciseDefinition, testingEnvironment]);
+  const openFirstTab = () => {
+    setTabIndex(0);
+  };
+
+  const resetOutput = () => {
+    setOutput("");
+  };
 
   useEffect(() => {
     if (fileSchemas) {
@@ -112,43 +119,69 @@ export function ExerciseRenderer({ exerciseDefinition }: Props) {
     }
   }, [output]);
 
+  useEffect(() => {
+    resetOutput();
+    openFirstTab();
+  }, [testingEnvironment]);
+
+  useEffect(() => {
+    const testingEnvironment =
+      exerciseDefinition.getDefaultTestingEnvironment();
+
+    if (testingEnvironment) {
+      setTestingEnvironment(testingEnvironment);
+      setFileSchemas(exerciseDefinition.getFileSchemas(testingEnvironment));
+    }
+
+    resetOutput();
+    openFirstTab();
+  }, [exerciseDefinition]);
+
   return (
     <Box className="exercise-container">
-      <Box className="exercise-actions-container">
-        <Select
-          size="lg"
-          className="exercise-testing-environment-options"
-          maxWidth="400px"
-          onChange={(event) =>
-            handleTestingEnvironmentChange(
-              event.target.value as TestingEnvironment,
-            )
-          }
-        >
-          {exerciseDefinition
-            .getTestingEnvironments()
-            .map((testingEnvironment) => {
-              return (
-                <option key={testingEnvironment} value={testingEnvironment}>
-                  {TestingEnvironmentUtils.getTestingEnvironmentLabel(
-                    testingEnvironment,
-                  )}
-                </option>
-              );
-            })}
-        </Select>
-        <Button
-          variant="solid"
-          size="lg"
-          className="exercise-run-test-button"
-          colorScheme={Colors.PRIMARY}
-          loadingText={ExerciseRendererLabels.RUN_TEST_BUTTON_LOADING}
-          isLoading={isTestRunning}
-          onClick={runTest}
-        >
-          {ExerciseRendererLabels.RUN_TEST_BUTTON}
-        </Button>
-      </Box>
+      {!exerciseDefinition.hasSubExercises() && (
+        <Box className="exercise-actions-container">
+          {exerciseDefinition.hasTestingEnvironments() && testingEnvironment && (
+            <Select
+              size="lg"
+              className="exercise-testing-environment-options"
+              maxWidth="400px"
+              value={testingEnvironment}
+              onChange={(event) =>
+                handleTestingEnvironmentChange(
+                  event.target.value as TestingEnvironment,
+                )
+              }
+            >
+              {exerciseDefinition
+                .getTestingEnvironments()
+                .map((testingEnvironment) => {
+                  return (
+                    <option
+                      key={`testing-environment-${testingEnvironment}`}
+                      value={testingEnvironment}
+                    >
+                      {TestingEnvironmentUtils.getTestingEnvironmentLabel(
+                        testingEnvironment,
+                      )}
+                    </option>
+                  );
+                })}
+            </Select>
+          )}
+          <Button
+            variant="solid"
+            size="lg"
+            className="exercise-run-test-button"
+            colorScheme={Colors.PRIMARY}
+            loadingText={ExerciseRendererLabels.RUN_TEST_BUTTON_LOADING}
+            isLoading={isTestRunning}
+            onClick={runTest}
+          >
+            {ExerciseRendererLabels.RUN_TEST_BUTTON}
+          </Button>
+        </Box>
+      )}
       <Box className="exercise-content-container-wrapper">
         <Box className="exercise-content-container">
           <Box as="h1" className="exercise-title" fontSize={FontSizes.HEADING1}>
@@ -163,58 +196,79 @@ export function ExerciseRenderer({ exerciseDefinition }: Props) {
               {exerciseDefinition.getDescription()}
             </Box>
           )}
-          {fileSchemas.length && (
-            <Tabs
-              index={tabIndex}
-              className="exercise-files"
-              onChange={(index) => setTabIndex(index)}
-            >
-              <TabList className="exercise-file-names-list">
-                {fileSchemas.map((fileSchema) => (
-                  <Tab
-                    key={fileSchema.name}
-                    className="exercise-file-name"
-                    fontSize={FontSizes.TEXT}
-                  >
-                    {fileSchema.name}
-                  </Tab>
-                ))}
-                {output && (
-                  <Tab fontSize={FontSizes.TEXT}>
-                    {ExerciseRendererLabels.OUTPUT_TAB}
-                  </Tab>
-                )}
-              </TabList>
-              <TabPanels className="exercise-file-contents">
-                {fileSchemas.map((fileSchema) => (
-                  <TabPanel
-                    key={fileSchema.name}
-                    className="exercise-file-content"
-                    data-color-mode="dark"
-                  >
-                    <CodeEditor
-                      language={getCodeEditorLanguage()}
-                      className="exercise-file-editor"
-                      value={fileContents[fileSchema.name]}
-                      onChange={(fileContent) => {
-                        handleFileContentChange(fileSchema.name, fileContent);
-                      }}
-                    />
-                  </TabPanel>
-                ))}
-                {output && (
-                  <TabPanel className="exercise-output-container">
-                    <Box
-                      className="exercise-output-text"
-                      aria-label={ExerciseRendererAriaLabels.OUTPUT_TEXT}
+          {exerciseDefinition.hasSubExercises() && (
+            <Box className="exercise-sub-exercises-section">
+              <Box as="h2" fontSize={FontSizes.HEADING2}>
+                {ExerciseRendererLabels.SUB_EXERCISES_TITLE_SECTION}
+              </Box>
+              <UnorderedList className="exercise-sub-exercises-section-list">
+                {exerciseDefinition
+                  .getSubExerciseDefinitions()
+                  .map((subExerciseDefinition) => (
+                    <ListItem
+                      key={`sub-exercise-list-item-${subExerciseDefinition.getId()}`}
+                      fontSize={FontSizes.TEXT}
                     >
-                      {getProcessedOutput()}
-                    </Box>
-                  </TabPanel>
-                )}
-              </TabPanels>
-            </Tabs>
+                      {subExerciseDefinition.getTitle()}
+                    </ListItem>
+                  ))}
+              </UnorderedList>
+            </Box>
           )}
+          {!exerciseDefinition.hasSubExercises() &&
+            testingEnvironment &&
+            fileSchemas.length && (
+              <Tabs
+                index={tabIndex}
+                className="exercise-files"
+                onChange={(index) => setTabIndex(index)}
+              >
+                <TabList className="exercise-file-names-list">
+                  {fileSchemas.map((fileSchema) => (
+                    <Tab
+                      key={`tab-${fileSchema.name}`}
+                      className="exercise-file-name"
+                      fontSize={FontSizes.TEXT}
+                    >
+                      {fileSchema.name}
+                    </Tab>
+                  ))}
+                  {output && (
+                    <Tab fontSize={FontSizes.TEXT}>
+                      {ExerciseRendererLabels.OUTPUT_TAB}
+                    </Tab>
+                  )}
+                </TabList>
+                <TabPanels className="exercise-file-contents">
+                  {fileSchemas.map((fileSchema) => (
+                    <TabPanel
+                      key={`tab-panel-${fileSchema.name}`}
+                      className="exercise-file-content"
+                      data-color-mode="dark"
+                    >
+                      <CodeEditor
+                        language={getCodeEditorLanguage(testingEnvironment)}
+                        className="exercise-file-editor"
+                        value={fileContents[fileSchema.name]}
+                        onChange={(fileContent) => {
+                          handleFileContentChange(fileSchema.name, fileContent);
+                        }}
+                      />
+                    </TabPanel>
+                  ))}
+                  {output && (
+                    <TabPanel className="exercise-output-container">
+                      <Box
+                        className="exercise-output-text"
+                        aria-label={ExerciseRendererAriaLabels.OUTPUT_TEXT}
+                      >
+                        {getProcessedOutput()}
+                      </Box>
+                    </TabPanel>
+                  )}
+                </TabPanels>
+              </Tabs>
+            )}
         </Box>
       </Box>
     </Box>

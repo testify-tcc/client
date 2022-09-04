@@ -1,7 +1,5 @@
-import { ExerciseDefinition } from "src/models/Exercises.models";
 import { dummyString } from "test/commonProps";
 import { mockExerciseDefinition } from "test/mocks/exerciseDefinition";
-import { mockExerciseDefinitionParams } from "test/mocks/exerciseDefinitionParams";
 import { mockExerciseFileSchemas } from "test/mocks/exerciseFileSchemas";
 import { mockTestingEnvironment } from "test/mocks/testingEnvironment";
 
@@ -23,17 +21,6 @@ describe("ExercisesModels", () => {
       expect(
         mockExerciseDefinition.getTestCommand(mockTestingEnvironment),
       ).toBe(dummyString);
-    });
-
-    it("should throw error when testing environment list is empty", () => {
-      const creation = () => {
-        const mockParams = {
-          ...mockExerciseDefinitionParams,
-          testingEnvironments: [],
-        };
-        new ExerciseDefinition(mockParams);
-      };
-      expect(creation).toThrowError();
     });
   });
 });

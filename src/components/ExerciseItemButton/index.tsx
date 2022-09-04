@@ -7,7 +7,7 @@ import { useCallback } from "react";
 type Props = {
   exerciseDefinition: ExerciseDefinition;
   isSelected: boolean;
-  onClick: () => void;
+  onExerciseItemButtonClick: (exerciseDefinition: ExerciseDefinition) => void;
 };
 
 export function ExerciseItemButton(props: Props) {
@@ -19,7 +19,7 @@ export function ExerciseItemButton(props: Props) {
     <Button
       variant="link"
       color={getExerciseItemColor()}
-      onClick={props.onClick}
+      onClick={() => props.onExerciseItemButtonClick(props.exerciseDefinition)}
       fontSize={FontSizes.TEXT}
     >
       {props.exerciseDefinition.getTitle()}

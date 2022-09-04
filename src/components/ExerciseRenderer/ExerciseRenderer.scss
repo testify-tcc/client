@@ -36,4 +36,10 @@ $spacement: 15px;
       font-size: var(--font-size-text-small);
     }
   }
+
+  &-sub-exercises-section {
+    display: flex;
+    flex-direction: column;
+    gap: $spacement;
+  }
 }

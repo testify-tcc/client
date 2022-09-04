@@ -3,6 +3,8 @@ import { TestingEnvironment } from "./TestingEnvironments.models";
 
 export enum ExerciseDefinitionIds {
   SAMPLE = "sample",
+  SAMPLE_SUM = "sample/sum",
+  SAMPLE_SUBTRACT = "sample/subtract",
 }
 
 export type ExerciseDefinitionFileSchemasMap = Record<
@@ -16,9 +18,10 @@ export type ExerciseDefinitionParams = {
   id: ExerciseDefinitionIds;
   title: string;
   description?: string;
-  testingEnvironments: TestingEnvironment[];
-  fileSchemasMap: ExerciseDefinitionFileSchemasMap;
-  testCommandsMap: ExerciseDefinitionTestCommandsMap;
+  testingEnvironments?: TestingEnvironment[];
+  fileSchemasMap?: ExerciseDefinitionFileSchemasMap;
+  testCommandsMap?: ExerciseDefinitionTestCommandsMap;
+  subExerciseDefinitions?: ExerciseDefinition[];
 };
 
 export class ExerciseDefinition {
@@ -28,20 +31,16 @@ export class ExerciseDefinition {
   private readonly testingEnvironments: TestingEnvironment[];
   private readonly fileSchemasMap: ExerciseDefinitionFileSchemasMap;
   private readonly testCommandsMap: ExerciseDefinitionTestCommandsMap;
+  private readonly subExerciseDefinitions: ExerciseDefinition[];
 
   constructor(params: ExerciseDefinitionParams) {
-    if (params.testingEnvironments.length < 1) {
-      throw new Error(
-        "Exercise definitions should have at least one testing environment",
-      );
-    }
-
     this.id = params.id;
     this.title = params.title;
-    this.fileSchemasMap = params.fileSchemasMap;
-    this.testCommandsMap = params.testCommandsMap;
     this.description = params.description ?? null;
-    this.testingEnvironments = params.testingEnvironments;
+    this.fileSchemasMap = params.fileSchemasMap ?? {};
+    this.testCommandsMap = params.testCommandsMap ?? {};
+    this.testingEnvironments = params.testingEnvironments ?? [];
+    this.subExerciseDefinitions = params.subExerciseDefinitions ?? [];
   }
 
   public getId(): ExerciseDefinitionIds {
@@ -56,16 +55,23 @@ export class ExerciseDefinition {
     return this.description;
   }
 
-  public getDefaultTestingEnvironment(): TestingEnvironment {
-    return this.testingEnvironments[0];
+  public getDefaultTestingEnvironment(): TestingEnvironment | null {
+    return this.testingEnvironments[0] ?? null;
   }
 
   public getTestingEnvironments(): TestingEnvironment[] {
     return this.testingEnvironments;
   }
 
+  public hasTestingEnvironments(): boolean {
+    return this.testingEnvironments.length >= 1;
+  }
+
   public getTestCommand(testingEnvironment: TestingEnvironment): string {
     return this.testCommandsMap[testingEnvironment];
+  }
+  public getSubExerciseDefinitions(): ExerciseDefinition[] {
+    return this.subExerciseDefinitions;
   }
 
   public getFileSchemas(
@@ -76,5 +82,9 @@ export class ExerciseDefinition {
 
   public getNumberOfFiles(testingEnvironment: TestingEnvironment): number {
     return Object.keys(this.getFileSchemas(testingEnvironment)).length;
+  }
+
+  public hasSubExercises(): boolean {
+    return this.subExerciseDefinitions.length >= 1;
   }
 }

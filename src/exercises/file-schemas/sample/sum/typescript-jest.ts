@@ -1,6 +1,6 @@
 export enum FileNames {
-  CODE = "sample.ts",
-  TEST = "sample.test.ts",
+  CODE = "sum.ts",
+  TEST = "sum.test.ts",
 }
 
 export const codeFileContent = `
@@ -12,7 +12,7 @@ export function sum(a: number, b: number): number {
 `.trim();
 
 export const testingFileContent = `
-import { sum } from './sample';
+import { sum } from './sum';
 
 'use strict';
 
