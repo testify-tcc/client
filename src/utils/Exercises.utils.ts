@@ -1,4 +1,8 @@
 import {
+  ExerciseDefinition,
+  FlattenExerciseDefinitions,
+} from "src/models/Exercises.models";
+import {
   ExerciseFile,
   ExerciseFileContentMap,
   ExerciseFileSchema,
@@ -33,5 +37,26 @@ export class ExerciseUtils {
       name,
       content: fileContents[name],
     }));
+  }
+
+  public static flattenExerciseDefinitions(
+    exerciseDefinitions: ExerciseDefinition[],
+  ): FlattenExerciseDefinitions {
+    const exerciseDefinitionsMap: FlattenExerciseDefinitions = {};
+
+    exerciseDefinitions.forEach((exerciseDefinition) => {
+      exerciseDefinitionsMap[exerciseDefinition.getId()] = exerciseDefinition;
+
+      if (exerciseDefinition.hasSubExercises()) {
+        exerciseDefinition
+          .getSubExerciseDefinitions()
+          .forEach((subExerciseDefinition) => {
+            exerciseDefinitionsMap[subExerciseDefinition.getId()] =
+              subExerciseDefinition;
+          });
+      }
+    });
+
+    return exerciseDefinitionsMap;
   }
 }

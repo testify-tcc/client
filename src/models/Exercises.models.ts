@@ -1,11 +1,13 @@
 import { ExerciseFileSchemas } from "./ExerciseFile.models";
 import { TestingEnvironment } from "./TestingEnvironments.models";
 
-export enum ExerciseDefinitionIds {
-  SAMPLE = "sample",
-  SAMPLE_SUM = "sample/sum",
-  SAMPLE_SUBTRACT = "sample/subtract",
-}
+export const EXERCISE_ID_SEPARATOR = "::";
+
+export const ExerciseDefinitionIds = {
+  SAMPLE: "sample",
+  SAMPLE_SUM: `sample${EXERCISE_ID_SEPARATOR}sum`,
+  SAMPLE_SUBTRACT: `sample${EXERCISE_ID_SEPARATOR}subtract`,
+};
 
 export type ExerciseDefinitionFileSchemasMap = Record<
   string,
@@ -14,8 +16,10 @@ export type ExerciseDefinitionFileSchemasMap = Record<
 
 export type ExerciseDefinitionTestCommandsMap = Record<string, string>;
 
+export type FlattenExerciseDefinitions = Record<string, ExerciseDefinition>;
+
 export type ExerciseDefinitionParams = {
-  id: ExerciseDefinitionIds;
+  id: string;
   title: string;
   description?: string;
   testingEnvironments?: TestingEnvironment[];
@@ -25,7 +29,7 @@ export type ExerciseDefinitionParams = {
 };
 
 export class ExerciseDefinition {
-  private readonly id: ExerciseDefinitionIds;
+  private readonly id: string;
   private readonly title: string;
   private readonly description: string | null;
   private readonly testingEnvironments: TestingEnvironment[];
@@ -43,7 +47,7 @@ export class ExerciseDefinition {
     this.subExerciseDefinitions = params.subExerciseDefinitions ?? [];
   }
 
-  public getId(): ExerciseDefinitionIds {
+  public getId(): string {
     return this.id;
   }
 

@@ -1,11 +1,15 @@
 import "./Navbar.scss";
 
-import { Box, Text } from "@chakra-ui/react";
+import { Box, Button } from "@chakra-ui/react";
 import { Colors, FontFamilies, FontSizes } from "src/theme";
 
+import { Link } from "react-router-dom";
 import { NavbarLabels } from "./Navbar.labels";
+import { usePathUtils } from "src/hooks/usePathUtils";
 
 export function Navbar() {
+  const { homePath, exercisesPath } = usePathUtils();
+
   return (
     <Box
       as="nav"
@@ -13,20 +17,28 @@ export function Navbar() {
       bgColor={Colors.PRIMARY}
       color={Colors.WHITE}
     >
-      <Text
-        className="navbar-platform-name"
-        fontFamily={FontFamilies.COMFORTAA}
-        fontSize={FontSizes.HEADING1}
-      >
-        {NavbarLabels.PLATFORM_NAME}
-      </Text>
-      <Text
-        className="navbar-section"
-        fontFamily={FontFamilies.OPEN_SANS}
-        fontSize={FontSizes.TEXT}
-      >
-        {NavbarLabels.EXERCISES_SECTION}
-      </Text>
+      <Link to={homePath}>
+        <Button
+          variant="link"
+          className="navbar-platform-name"
+          color={Colors.WHITE}
+          fontSize={FontSizes.HEADING1}
+          fontFamily={FontFamilies.COMFORTAA}
+        >
+          {NavbarLabels.PLATFORM_NAME}
+        </Button>
+      </Link>
+      <Link to={exercisesPath}>
+        <Button
+          variant="link"
+          className="navbar-section"
+          color={Colors.WHITE}
+          fontSize={FontSizes.TEXT}
+          fontFamily={FontFamilies.OPEN_SANS}
+        >
+          {NavbarLabels.EXERCISES_SECTION}
+        </Button>
+      </Link>
     </Box>
   );
 }

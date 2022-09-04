@@ -12,7 +12,7 @@ import {
   Tabs,
   UnorderedList,
 } from "@chakra-ui/react";
-import { Colors, FontSizes } from "src/theme";
+import { Colors, FontFamilies, FontSizes } from "src/theme";
 import {
   ExerciseFileContentMap,
   ExerciseFileSchemas,
@@ -21,6 +21,7 @@ import { useCallback, useEffect, useState } from "react";
 
 import { CodeEditor } from "../CodeEditor";
 import { ExerciseDefinition } from "src/models/Exercises.models";
+import { ExerciseLink } from "../Links/ExerciseLink";
 import { ExerciseRendererAriaLabels } from "./ExerciseRenderer.aria.labels";
 import { ExerciseRendererLabels } from "./ExerciseRenderer.labels";
 import { ExerciseUtils } from "src/utils/Exercises.utils";
@@ -207,9 +208,14 @@ export function ExerciseRenderer({ exerciseDefinition }: Props) {
                   .map((subExerciseDefinition) => (
                     <ListItem
                       key={`sub-exercise-list-item-${subExerciseDefinition.getId()}`}
-                      fontSize={FontSizes.TEXT}
                     >
-                      {subExerciseDefinition.getTitle()}
+                      <ExerciseLink
+                        color={Colors.BLACK}
+                        fontSize={FontSizes.TEXT}
+                        fontFamily={FontFamilies.COMFORTAA}
+                        label={subExerciseDefinition.getTitle()}
+                        exerciseId={subExerciseDefinition.getId()}
+                      />
                     </ListItem>
                   ))}
               </UnorderedList>

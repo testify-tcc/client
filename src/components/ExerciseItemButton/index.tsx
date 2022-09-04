@@ -1,7 +1,7 @@
-import { Colors, FontSizes } from "src/theme";
+import { Colors, FontFamilies, FontSizes } from "src/theme";
 
-import { Button } from "@chakra-ui/react";
 import { ExerciseDefinition } from "src/models/Exercises.models";
+import { ExerciseLink } from "../Links/ExerciseLink";
 import { useCallback } from "react";
 
 type Props = {
@@ -16,13 +16,12 @@ export function ExerciseItemButton(props: Props) {
   }, [props.isSelected]);
 
   return (
-    <Button
-      variant="link"
-      color={getExerciseItemColor()}
-      onClick={() => props.onExerciseItemButtonClick(props.exerciseDefinition)}
+    <ExerciseLink
       fontSize={FontSizes.TEXT}
-    >
-      {props.exerciseDefinition.getTitle()}
-    </Button>
+      fontFamily={FontFamilies.COMFORTAA}
+      color={getExerciseItemColor()}
+      label={props.exerciseDefinition.getTitle()}
+      exerciseId={props.exerciseDefinition.getId()}
+    />
   );
 }

@@ -8,12 +8,9 @@ import {
   UnorderedList,
 } from "@chakra-ui/react";
 import { ChevronRightIcon, CloseIcon, HamburgerIcon } from "@chakra-ui/icons";
-import {
-  ExerciseDefinition,
-  ExerciseDefinitionIds,
-} from "src/models/Exercises.models";
 
 import { Colors } from "src/theme";
+import { ExerciseDefinition } from "src/models/Exercises.models";
 import { ExerciseItemButton } from "../ExerciseItemButton";
 import { ExercisesPanelAriaLabels } from "./ExercisesPanel.aria.labels";
 import classNames from "classnames";
@@ -30,7 +27,7 @@ type Props = {
 
 export function ExercisesPanel(props: Props) {
   const isExerciseItemSelected = useCallback(
-    (exerciseDefinitionId: ExerciseDefinitionIds) =>
+    (exerciseDefinitionId: string) =>
       exerciseDefinitionId === props.selectedExerciseDefinitionId,
     [props.selectedExerciseDefinitionId],
   );
