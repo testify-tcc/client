@@ -17,6 +17,6 @@ import { sum } from './sum';
 'use strict';
 
 test('should return proper result', () => {
-  expect().toBe();
+  expect().toBe(2);
 });
 `.trim();
