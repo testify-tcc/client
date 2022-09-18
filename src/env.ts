@@ -1,3 +1,3 @@
 export const env = {
-  SERVER_ENDPOINT: "http://localhost:8000",
+  SERVER_ENDPOINT: "http://localhost:3001",
 };
