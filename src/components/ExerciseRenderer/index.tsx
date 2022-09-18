@@ -268,6 +268,7 @@ export function ExerciseRenderer({ exerciseDefinition }: Props) {
                   {output && (
                     <TabPanel className="exercise-output-container">
                       <Box
+                        fontFamily={FontFamilies.MONOSPACE}
                         className="exercise-output-text"
                         aria-label={ExerciseRendererAriaLabels.OUTPUT_TEXT}
                       >

@@ -2,7 +2,7 @@ import { extendTheme } from "@chakra-ui/react";
 
 export enum FontFamilies {
   COMFORTAA = "comfortaa",
-  OPEN_SANS = "open-sans",
+  MONOSPACE = "monospace",
 }
 
 export enum Colors {
@@ -22,6 +22,6 @@ export enum FontSizes {
 export const theme = extendTheme({
   fonts: {
     [FontFamilies.COMFORTAA]: `"Comfortaa", cursive`,
-    [FontFamilies.OPEN_SANS]: `"Open Sans", sans-serif`,
+    [FontFamilies.MONOSPACE]: `ui-monospace,SFMono-Regular,SF Mono,Consolas,Liberation Mono,Menlo,monospace`,
   },
 });
