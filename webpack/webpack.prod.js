@@ -1,4 +1,3 @@
-const webpack = require("webpack");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 module.exports = {
@@ -12,10 +11,5 @@ module.exports = {
       },
     ],
   },
-  plugins: [
-    new MiniCssExtractPlugin(),
-    new webpack.DefinePlugin({
-      "process.env.ENV": JSON.stringify("prod"),
-    }),
-  ],
+  plugins: [new MiniCssExtractPlugin()],
 };
