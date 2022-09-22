@@ -42,7 +42,7 @@ module.exports = {
     }),
     new HtmlWebpackPlugin({
       filename: "200.html",
-      template: path.resolve(__dirname, "..", "./public/200.html"),
+      template: path.resolve(__dirname, "..", "./public/index.html"),
     }),
   ],
   stats: "errors-only",
