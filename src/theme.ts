@@ -10,6 +10,10 @@ export enum Colors {
   SECONDARY = "yellow",
   WHITE = "gray.50",
   BLACK = "black",
+  PASSED = "green.700",
+  FAILED = "red.700",
+  PASSED_BACKGROUND = "green.100",
+  FAILED_BACKGROUND = "red.100",
 }
 
 export enum FontSizes {

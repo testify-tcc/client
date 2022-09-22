@@ -8,5 +8,6 @@ export type RunRequestBody = {
 };
 
 export type RunRequestResponse = {
+  passed: boolean;
   output: string;
 };

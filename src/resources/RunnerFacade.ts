@@ -14,13 +14,16 @@ export class RunnerFacade {
 
     try {
       if (config.runnerEndpoint) {
-        const { data } = await axios.post(config.runnerEndpoint, requestBody);
-        return data;
+        const response = await axios.post<RunRequestResponse>(
+          config.runnerEndpoint,
+          requestBody,
+        );
+        return response.data;
       } else {
-        return { output: "Server endpoint not found." };
+        return { passed: false, output: "Server endpoint not found." };
       }
     } catch {
-      return { output: "Error happend during test execution." };
+      return { passed: false, output: "Error happend during test execution." };
     }
   }
 }

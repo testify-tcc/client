@@ -17,15 +17,15 @@ import {
   ExerciseFileContentMap,
   ExerciseFileSchemas,
 } from "src/models/ExerciseFile.models";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 
 import { CodeEditor } from "../CodeEditor";
 import { ExerciseDefinition } from "src/models/Exercises.models";
 import { ExerciseLink } from "../Links/ExerciseLink";
-import { ExerciseRendererAriaLabels } from "./ExerciseRenderer.aria.labels";
 import { ExerciseRendererLabels } from "./ExerciseRenderer.labels";
 import { ExerciseUtils } from "src/utils/Exercises.utils";
 import { RunnerFacade } from "src/resources/RunnerFacade";
+import { TestOutput } from "../TestOutput";
 import { TestingEnvironment } from "src/models/TestingEnvironments.models";
 import { TestingEnvironmentUtils } from "src/utils/TestingEnvironment.utils";
 import { useEffectOnlyOnDependenciesUpdate } from "src/hooks/useEffectOnlyOnDependenciesUpdate";
@@ -36,6 +36,7 @@ type Props = {
 
 export function ExerciseRenderer({ exerciseDefinition }: Props) {
   const [output, setOutput] = useState("");
+  const [passed, setPassed] = useState(false);
   const [tabIndex, setTabIndex] = useState(0);
   const [isTestRunning, setIsTestRunning] = useState(false);
   const [fileSchemas, setFileSchemas] = useState<ExerciseFileSchemas>([]);
@@ -43,7 +44,7 @@ export function ExerciseRenderer({ exerciseDefinition }: Props) {
   const [testingEnvironment, setTestingEnvironment] =
     useState<TestingEnvironment | null>(null);
 
-  const getOutputTabIndex = useCallback(() => {
+  const outputTabIndex = useMemo(() => {
     return testingEnvironment
       ? exerciseDefinition.getNumberOfFiles(testingEnvironment)
       : 0;
@@ -70,38 +71,27 @@ export function ExerciseRenderer({ exerciseDefinition }: Props) {
     [exerciseDefinition],
   );
 
-  const getProcessedOutput = useCallback(() => {
-    return output
-      .split("\n")
-      .filter((str) => str)
-      .map((str, idx) => (
-        <>
-          <span>{str}</span>
-          {idx !== output.length - 1 ? <br /> : null}
-        </>
-      ));
-  }, [output]);
-
   const runTest = useCallback(async () => {
     setIsTestRunning(true);
     if (testingEnvironment) {
-      const { output } = await RunnerFacade.runTestAndGetOutput({
+      const response = await RunnerFacade.runTestAndGetOutput({
         testingEnvironment,
         testCommand: exerciseDefinition.getTestCommand(testingEnvironment),
         files: ExerciseUtils.createFileList(fileSchemas, fileContents),
       });
-      setOutput(output);
+      setPassed(response.passed);
+      setOutput(response.output);
     }
     setIsTestRunning(false);
   }, [testingEnvironment, exerciseDefinition, fileSchemas, fileContents]);
 
-  const openFirstTab = () => {
+  const openFirstTab = useCallback(() => {
     setTabIndex(0);
-  };
+  }, []);
 
-  const resetOutput = () => {
+  const resetOutput = useCallback(() => {
     setOutput("");
-  };
+  }, []);
 
   useEffect(() => {
     if (fileSchemas) {
@@ -118,14 +108,14 @@ export function ExerciseRenderer({ exerciseDefinition }: Props) {
 
   useEffectOnlyOnDependenciesUpdate(() => {
     if (output) {
-      setTabIndex(getOutputTabIndex());
+      setTabIndex(outputTabIndex);
     }
   }, [output]);
 
   useEffect(() => {
     resetOutput();
     openFirstTab();
-  }, [testingEnvironment]);
+  }, [openFirstTab, resetOutput, testingEnvironment]);
 
   useEffect(() => {
     const testingEnvironment =
@@ -138,7 +128,7 @@ export function ExerciseRenderer({ exerciseDefinition }: Props) {
 
     resetOutput();
     openFirstTab();
-  }, [exerciseDefinition]);
+  }, [exerciseDefinition, openFirstTab, resetOutput]);
 
   return (
     <Box className="exercise-container">
@@ -267,13 +257,7 @@ export function ExerciseRenderer({ exerciseDefinition }: Props) {
                   ))}
                   {output && (
                     <TabPanel className="exercise-output-container">
-                      <Box
-                        fontFamily={FontFamilies.MONOSPACE}
-                        className="exercise-output-text"
-                        aria-label={ExerciseRendererAriaLabels.OUTPUT_TEXT}
-                      >
-                        {getProcessedOutput()}
-                      </Box>
+                      <TestOutput output={output} passed={passed} />
                     </TabPanel>
                   )}
                 </TabPanels>
