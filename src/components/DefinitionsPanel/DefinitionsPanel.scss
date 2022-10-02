@@ -16,6 +16,10 @@
     width: 350px;
   }
 
+  &-closed {
+    padding: var(--default-spacement);
+  }
+
   &-list-wrapper {
     flex: 1;
     overflow-y: auto;
