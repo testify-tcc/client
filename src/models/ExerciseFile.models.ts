@@ -1,16 +1,21 @@
+export enum ExerciseFileType {
+  CODE = "CODE",
+  TEST = "TEST",
+}
+
 type ExerciseFileCommonAttributes = {
-  name: string;
+  fileName: string;
 };
 
 export type ExerciseFileSchema = ExerciseFileCommonAttributes & {
-  editDisabled?: boolean;
+  type: ExerciseFileType;
   initialContent: string;
 };
-
-export type ExerciseFileSchemas = Array<ExerciseFileSchema>;
 
 export type ExerciseFile = ExerciseFileCommonAttributes & {
   content: string;
 };
+
+export type ExerciseFileSchemas = Array<ExerciseFileSchema>;
 
 export type ExerciseFileContentMap = Record<string, string>;

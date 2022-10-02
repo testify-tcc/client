@@ -1,8 +1,10 @@
+$spacement: 45px;
+
 .navbar-container {
   display: flex;
   flex-direction: row;
   align-items: center;
   width: 100%;
-  padding: 10px 45px;
-  gap: 45px;
+  padding: 20px $spacement;
+  gap: $spacement;
 }

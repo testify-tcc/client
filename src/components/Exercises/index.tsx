@@ -1,56 +1,74 @@
 import "./Exercises.scss";
 
-import { exerciseDefinitions, flattenExerciseDefinitions } from "src/exercises";
+import { Box, Divider, Spinner, Text } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 
-import { Box } from "@chakra-ui/react";
 import { DefaultLayout } from "components/layouts/DefaultLayout";
-import { ExerciseDefinition } from "src/models/Exercises.models";
-import { ExerciseRenderer } from "../ExerciseRenderer";
-import { ExercisesPanel } from "../ExercisesPanel";
-import { useExercisesQueryParams } from "src/hooks/useExercisesQueryParams";
+import { Definition } from "src/models/Definitions.models";
+import { DefinitionRenderer } from "../DefinitionRenderer";
+import { DefinitionsPanel } from "../DefinitionsPanel";
+import { ExercisesLabels } from "./Exercises.labels";
+import { useDefinitions } from "src/hooks/useDefinitions";
+import { useDefinitionsQueryParams } from "src/hooks/useDefinitionsQueryParams";
 import { useToggle } from "src/hooks/useToggle";
 
 export function Exercises() {
-  const { exerciseId, setExerciseQueryParams } = useExercisesQueryParams();
-  const [selectedExerciseDefinition, setSelectedExerciseDefinition] =
-    useState<ExerciseDefinition>();
+  const {
+    definitionList,
+    definitionMap,
+    isLoadingDefinitions,
+    loadDefinitions,
+  } = useDefinitions();
+  const { definitionId, setDefinitionQueryParams } =
+    useDefinitionsQueryParams();
+  const [selectedDefinition, setSelectedDefinition] = useState<Definition>();
   const { value: isPanelOpen, toggle: toggleIsPanelOpen } = useToggle(true);
 
-  const handleExerciseItemClick = (exerciseDefinition: ExerciseDefinition) => {
-    setExerciseQueryParams(exerciseDefinition.getId());
+  const handleDefinitionItemClick = (definition: Definition) => {
+    setDefinitionQueryParams(definition.id);
   };
 
   useEffect(() => {
-    if (exerciseId) {
-      const exerciseDefinition = flattenExerciseDefinitions[exerciseId];
+    if (definitionList && definitionMap) {
+      if (definitionId) {
+        const exerciseDefinition = definitionMap[definitionId];
 
-      if (exerciseDefinition) {
-        setSelectedExerciseDefinition(exerciseDefinition);
-        return;
+        if (exerciseDefinition) {
+          setSelectedDefinition(exerciseDefinition);
+          return;
+        }
       }
-    }
 
-    setSelectedExerciseDefinition(exerciseDefinitions[0]);
-  }, [exerciseId]);
+      setSelectedDefinition(definitionList[0]);
+    }
+  }, [definitionList, definitionMap, definitionId]);
+
+  useEffect(() => {
+    loadDefinitions();
+  }, [loadDefinitions]);
 
   return (
     <DefaultLayout>
-      <Box className="exercises-container">
-        {selectedExerciseDefinition && (
-          <ExercisesPanel
+      {isLoadingDefinitions && (
+        <Box className="exercises-page-loader">
+          <Spinner thickness="4px" speed="0.65s" size="xl" />
+          <Text>{ExercisesLabels.LOADING_LABEL}</Text>
+        </Box>
+      )}
+      {definitionList && selectedDefinition && (
+        <Box className="exercises-page-container">
+          <DefinitionsPanel
             isOpen={isPanelOpen}
-            exerciseDefinitions={exerciseDefinitions}
+            definitions={definitionList}
             onOpenPanelButtonClick={toggleIsPanelOpen}
             onClosePanelButtonClick={toggleIsPanelOpen}
-            selectedExerciseDefinitionId={selectedExerciseDefinition.getId()}
-            onExerciseItemClick={handleExerciseItemClick}
+            selectedDefinitionId={selectedDefinition.id}
+            onDefinitionItemClick={handleDefinitionItemClick}
           />
-        )}
-        {selectedExerciseDefinition && (
-          <ExerciseRenderer exerciseDefinition={selectedExerciseDefinition} />
-        )}
-      </Box>
+          <Divider orientation="vertical" />
+          <DefinitionRenderer definition={selectedDefinition} />
+        </Box>
+      )}
     </DefaultLayout>
   );
 }

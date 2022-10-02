@@ -34,7 +34,7 @@ export function Navbar() {
           className="navbar-section"
           color={Colors.WHITE}
           fontSize={FontSizes.TEXT}
-          fontFamily={FontFamilies.OPEN_SANS}
+          fontFamily={FontFamilies.COMFORTAA}
         >
           {NavbarLabels.EXERCISES_SECTION}
         </Button>

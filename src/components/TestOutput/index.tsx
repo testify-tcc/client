@@ -1,6 +1,6 @@
 import { Colors, FontFamilies } from "src/theme";
 
-import { ExerciseRendererAriaLabels } from "../ExerciseRenderer/ExerciseRenderer.aria.labels";
+import { TestOutputAriaLabels } from "./TestOutput.ariaLabels";
 import { Text } from "@chakra-ui/react";
 import { useMemo } from "react";
 
@@ -38,7 +38,7 @@ export function TestOutput({ passed, output }: Props): JSX.Element {
       fontFamily={FontFamilies.MONOSPACE}
       color={testOutputColor}
       backgroundColor={testOutputBackgroundColor}
-      aria-label={ExerciseRendererAriaLabels.OUTPUT_TEXT}
+      aria-label={TestOutputAriaLabels.OUTPUT_TEXT}
     >
       {processedOutput}
     </Text>

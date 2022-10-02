@@ -1,7 +1,18 @@
-.exercises {
+.exercises-page {
   &-container {
     height: 100%;
     display: flex;
     flex-direction: row;
+    padding: var(--default-spacement);
+    gap: var(--default-spacement);
+  }
+
+  &-loader {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: var(--default-spacement);
   }
 }

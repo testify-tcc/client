@@ -1,8 +1,4 @@
 import {
-  ExerciseDefinition,
-  FlattenExerciseDefinitions,
-} from "src/models/Exercises.models";
-import {
   ExerciseFile,
   ExerciseFileContentMap,
   ExerciseFileSchema,
@@ -33,30 +29,9 @@ export class ExerciseUtils {
     fileSchemas: ExerciseFileSchema[],
     fileContents: ExerciseFileContentMap,
   ): ExerciseFile[] {
-    return fileSchemas.map(({ name }) => ({
-      name,
-      content: fileContents[name],
+    return fileSchemas.map(({ fileName }) => ({
+      fileName,
+      content: fileContents[fileName],
     }));
-  }
-
-  public static flattenExerciseDefinitions(
-    exerciseDefinitions: ExerciseDefinition[],
-  ): FlattenExerciseDefinitions {
-    const exerciseDefinitionsMap: FlattenExerciseDefinitions = {};
-
-    exerciseDefinitions.forEach((exerciseDefinition) => {
-      exerciseDefinitionsMap[exerciseDefinition.getId()] = exerciseDefinition;
-
-      if (exerciseDefinition.hasSubExercises()) {
-        exerciseDefinition
-          .getSubExerciseDefinitions()
-          .forEach((subExerciseDefinition) => {
-            exerciseDefinitionsMap[subExerciseDefinition.getId()] =
-              subExerciseDefinition;
-          });
-      }
-    });
-
-    return exerciseDefinitionsMap;
   }
 }

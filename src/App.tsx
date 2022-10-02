@@ -1,7 +1,7 @@
 import "./App.scss";
 
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Colors, FontFamilies } from "./theme";
-import { Route, Routes } from "react-router-dom";
 
 import { Box } from "@chakra-ui/react";
 import { Exercises } from "./components/Exercises";
@@ -17,10 +17,12 @@ export function App() {
       bgColor={Colors.WHITE}
       fontFamily={FontFamilies.COMFORTAA}
     >
-      <Routes>
-        <Route path={homePath} element={<Home />} />
-        <Route path={exercisesPath} element={<Exercises />} />
-      </Routes>
+      <BrowserRouter>
+        <Routes>
+          <Route path={homePath} element={<Home />} />
+          <Route path={exercisesPath} element={<Exercises />} />
+        </Routes>
+      </BrowserRouter>
     </Box>
   );
 }

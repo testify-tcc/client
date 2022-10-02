@@ -1,0 +1,21 @@
+.exercise {
+  &-content-container {
+    display: flex;
+    flex-direction: column;
+    gap: var(--default-spacement);
+  }
+
+  &-actions-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
+  &-output-text {
+    background-color: #edf2f7;
+    border: 1px solid #a0aec0;
+    border-radius: 5px;
+    padding: 15px;
+    font-size: var(--font-size-text-small);
+  }
+}
