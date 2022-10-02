@@ -5,6 +5,8 @@ $spacement: 45px;
   flex-direction: row;
   align-items: center;
   width: 100%;
-  padding: 20px $spacement;
+  padding-left: $spacement;
+  padding-right: $spacement;
   gap: $spacement;
+  height: 100px;
 }

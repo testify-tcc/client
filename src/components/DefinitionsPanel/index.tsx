@@ -70,44 +70,129 @@ export function DefinitionsPanel(props: Props) {
         />
       </Box>
       <Divider orientation="horizontal" />
-      <UnorderedList className="definitions-panel-list">
-        {props.definitions.map((definition) => {
-          return (
-            <ListItem className="definitions-panel-item" key={definition.id}>
-              <ListIcon as={ChevronRightIcon} color={Colors.PRIMARY} />
-              <DefinitionItemButton
-                definition={definition}
-                onClick={props.onDefinitionItemClick}
-                isSelected={isDefinitionItemSelected(definition.id)}
-              />
-              {definition.type == DefinitionType.SECTION && (
-                <UnorderedList
-                  className={classNames(
-                    "definitions-panel-list",
-                    "definitions-panel-sub-list",
-                  )}
-                >
-                  {definition.exercises.map((exerciseDefinition) => (
-                    <ListItem
-                      className="definitions-panel-sub-item"
-                      key={exerciseDefinition.id}
-                    >
-                      <ListIcon as={ChevronRightIcon} color={Colors.PRIMARY} />
-                      <DefinitionItemButton
-                        definition={exerciseDefinition}
-                        onClick={props.onDefinitionItemClick}
-                        isSelected={isDefinitionItemSelected(
-                          exerciseDefinition.id,
-                        )}
-                      />
-                    </ListItem>
-                  ))}
-                </UnorderedList>
-              )}
-            </ListItem>
-          );
-        })}
-      </UnorderedList>
+      <Box className="definitions-panel-list-wrapper">
+        <UnorderedList className="definitions-panel-list definitions-panel-prime-list">
+          {props.definitions.map((definition) => {
+            return (
+              <ListItem className="definitions-panel-item" key={definition.id}>
+                <ListIcon as={ChevronRightIcon} color={Colors.PRIMARY} />
+                <DefinitionItemButton
+                  definition={definition}
+                  onClick={props.onDefinitionItemClick}
+                  isSelected={isDefinitionItemSelected(definition.id)}
+                />
+                {definition.type == DefinitionType.SECTION && (
+                  <UnorderedList
+                    className={classNames(
+                      "definitions-panel-list",
+                      "definitions-panel-sub-list",
+                    )}
+                  >
+                    {definition.exercises.map((exerciseDefinition) => (
+                      <ListItem
+                        className="definitions-panel-sub-item"
+                        key={exerciseDefinition.id}
+                      >
+                        <ListIcon
+                          as={ChevronRightIcon}
+                          color={Colors.PRIMARY}
+                        />
+                        <DefinitionItemButton
+                          definition={exerciseDefinition}
+                          onClick={props.onDefinitionItemClick}
+                          isSelected={isDefinitionItemSelected(
+                            exerciseDefinition.id,
+                          )}
+                        />
+                      </ListItem>
+                    ))}
+                  </UnorderedList>
+                )}
+              </ListItem>
+            );
+          })}
+          <ListItem>
+            <ListIcon as={ChevronRightIcon} color={Colors.PRIMARY} />
+            Bla
+          </ListItem>
+          <ListItem>
+            <ListIcon as={ChevronRightIcon} color={Colors.PRIMARY} />
+            Bla
+          </ListItem>
+          <ListItem>
+            <ListIcon as={ChevronRightIcon} color={Colors.PRIMARY} />
+            Bla
+          </ListItem>
+          <ListItem>
+            <ListIcon as={ChevronRightIcon} color={Colors.PRIMARY} />
+            Bla
+          </ListItem>
+          <ListItem>
+            <ListIcon as={ChevronRightIcon} color={Colors.PRIMARY} />
+            Bla
+          </ListItem>
+          <ListItem>
+            <ListIcon as={ChevronRightIcon} color={Colors.PRIMARY} />
+            Bla
+          </ListItem>
+          <ListItem>
+            <ListIcon as={ChevronRightIcon} color={Colors.PRIMARY} />
+            Bla
+          </ListItem>
+          <ListItem>
+            <ListIcon as={ChevronRightIcon} color={Colors.PRIMARY} />
+            Bla
+          </ListItem>
+          <ListItem>
+            <ListIcon as={ChevronRightIcon} color={Colors.PRIMARY} />
+            Bla
+          </ListItem>
+          <ListItem>
+            <ListIcon as={ChevronRightIcon} color={Colors.PRIMARY} />
+            Bla
+          </ListItem>
+          <ListItem>
+            <ListIcon as={ChevronRightIcon} color={Colors.PRIMARY} />
+            Bla
+          </ListItem>
+          <ListItem>
+            <ListIcon as={ChevronRightIcon} color={Colors.PRIMARY} />
+            Bla
+          </ListItem>
+          <ListItem>
+            <ListIcon as={ChevronRightIcon} color={Colors.PRIMARY} />
+            Bla
+          </ListItem>
+          <ListItem>
+            <ListIcon as={ChevronRightIcon} color={Colors.PRIMARY} />
+            Bla
+          </ListItem>
+          <ListItem>
+            <ListIcon as={ChevronRightIcon} color={Colors.PRIMARY} />
+            Bla
+          </ListItem>
+          <ListItem>
+            <ListIcon as={ChevronRightIcon} color={Colors.PRIMARY} />
+            Bla
+          </ListItem>
+          <ListItem>
+            <ListIcon as={ChevronRightIcon} color={Colors.PRIMARY} />
+            Bla
+          </ListItem>
+          <ListItem>
+            <ListIcon as={ChevronRightIcon} color={Colors.PRIMARY} />
+            Bla
+          </ListItem>
+          <ListItem>
+            <ListIcon as={ChevronRightIcon} color={Colors.PRIMARY} />
+            Bla
+          </ListItem>
+          <ListItem>
+            <ListIcon as={ChevronRightIcon} color={Colors.PRIMARY} />
+            Bla
+          </ListItem>
+        </UnorderedList>
+      </Box>
     </Box>
   );
 }

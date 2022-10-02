@@ -7,13 +7,18 @@
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
+    padding: var(--default-spacement);
   }
 
   &-open {
     display: flex;
     flex-direction: column;
     width: 350px;
-    gap: var(--default-spacement);
+  }
+
+  &-list-wrapper {
+    flex: 1;
+    overflow-y: auto;
   }
 
   &-list,
@@ -24,6 +29,10 @@
     margin-inline-start: 0 !important;
     font-size: 18px;
     gap: var(--default-spacement);
+  }
+
+  &-prime-list {
+    padding: var(--default-spacement);
   }
 
   &-sub-list {

@@ -1,9 +1,16 @@
-import React from "react";
+import "./DefinitionDescription.scss";
+
+import ReactMarkdown from "react-markdown";
+import gfm from "remark-gfm";
 
 type Props = {
-  children: React.ReactNode;
+  children: string;
 };
 
 export function DefinitionDescription({ children }: Props) {
-  return <p>{children}</p>;
+  return (
+    <ReactMarkdown remarkPlugins={[gfm]} className="definition-description">
+      {children}
+    </ReactMarkdown>
+  );
 }

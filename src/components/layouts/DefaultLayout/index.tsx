@@ -1,6 +1,7 @@
 import "./DefaultLayout.scss";
 
 import { Box } from "@chakra-ui/react";
+import { FontFamilies } from "src/theme";
 import { Navbar } from "src/components/Navbar";
 import { PropsWithChildren } from "react";
 import classNames from "classnames";
@@ -14,7 +15,10 @@ type Props = PropsWithChildren & {
 
 export function DefaultLayout({ children, classes }: Props) {
   return (
-    <Box className={classNames("default-layout-container", classes?.container)}>
+    <Box
+      fontFamily={FontFamilies.COMFORTAA}
+      className={classNames("default-layout-container", classes?.container)}
+    >
       <Navbar />
       <Box
         className={classNames(

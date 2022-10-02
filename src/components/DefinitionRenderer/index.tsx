@@ -12,10 +12,12 @@ type Props = {
 
 export function DefinitionRenderer({ definition }: Props): JSX.Element {
   return (
-    <Box className="definition-container">
-      <DefinitionDescription>{definition.description}</DefinitionDescription>
-      <Divider orientation="horizontal" />
-      <DefinitionContent definition={definition} />
+    <Box className="definition-wrapper">
+      <Box className="definition-container">
+        <DefinitionDescription>{definition.description}</DefinitionDescription>
+        <Divider orientation="horizontal" />
+        <DefinitionContent definition={definition} />
+      </Box>
     </Box>
   );
 }
