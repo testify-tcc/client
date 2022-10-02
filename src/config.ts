@@ -10,7 +10,7 @@ const devConfig: Config = {
 
 const prodConfig: Config = {
   runnerEndpoint: "http://ec2-18-212-33-18.compute-1.amazonaws.com",
-  exercisesEndpoint: "",
+  exercisesEndpoint: "http://ec2-54-227-179-107.compute-1.amazonaws.com",
 };
 
 export function getConfig(): Config {
