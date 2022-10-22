@@ -17,6 +17,7 @@ export type ExerciseDefinition = DefinitionCommonAttributes & {
   testEnvironments: TestingEnvironment[];
   fileSchemasMap: Record<TestingEnvironment, ExerciseFileSchemas>;
   testCommandsMap: Record<TestingEnvironment, string>;
+  solutionDescription: string;
 };
 
 export type SectionDefinition = DefinitionCommonAttributes & {

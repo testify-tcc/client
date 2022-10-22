@@ -10,7 +10,6 @@ import {
   TabPanels,
   Tabs,
 } from "@chakra-ui/react";
-import { Colors, FontSizes } from "src/theme";
 import {
   ExerciseFileContentMap,
   ExerciseFileSchemas,
@@ -19,6 +18,7 @@ import {
 import { useCallback, useEffect, useMemo, useState } from "react";
 
 import { CodeEditor } from "../CodeEditor";
+import { Colors } from "src/theme";
 import { ExerciseDefinition } from "src/models/Definitions.models";
 import { ExerciseDefinitionContentLabels } from "./ExerciseDefinitionContent.labels";
 import { ExerciseUtils } from "src/utils/Exercises.utils";
@@ -166,16 +166,11 @@ export function ExerciseDefinitionContent({ exerciseDefinition }: Props) {
             <Tab
               key={`tab-${fileSchema.fileName}`}
               className="exercise-file-name"
-              fontSize={FontSizes.TEXT}
             >
               {fileSchema.fileName}
             </Tab>
           ))}
-          {output && (
-            <Tab fontSize={FontSizes.TEXT}>
-              {ExerciseDefinitionContentLabels.OUTPUT_TAB}
-            </Tab>
-          )}
+          {output && <Tab>{ExerciseDefinitionContentLabels.OUTPUT_TAB}</Tab>}
         </TabList>
         <TabPanels className="exercise-file-contents">
           {fileSchemas.map((fileSchema) => (
