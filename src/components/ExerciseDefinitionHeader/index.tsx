@@ -4,6 +4,7 @@ import { DefinitionDescription } from "../DefinitionDescription";
 import { ExerciseDefinition } from "src/models/Definitions.models";
 import { ExerciseDefinitionHeaderLabels } from "./ExerciseDefinitionHeader.labels";
 import { TestingEnvironment } from "src/models/TestingEnvironments.models";
+import { useMemo } from "react";
 
 type Props = {
   exerciseDefinition: ExerciseDefinition;
@@ -12,7 +13,18 @@ type Props = {
 
 export function ExerciseDefinitionHeader({
   exerciseDefinition,
+  testingEnvironment,
 }: Props): JSX.Element {
+  const description = useMemo(
+    () => exerciseDefinition.descriptionsMap[testingEnvironment],
+    [exerciseDefinition.descriptionsMap, testingEnvironment],
+  );
+
+  const solutionDescription = useMemo(
+    () => exerciseDefinition.solutionDescriptionsMap[testingEnvironment],
+    [exerciseDefinition.solutionDescriptionsMap, testingEnvironment],
+  );
+
   return (
     <Tabs>
       <TabList>
@@ -23,14 +35,10 @@ export function ExerciseDefinitionHeader({
       </TabList>
       <TabPanels>
         <TabPanel>
-          <DefinitionDescription>
-            {exerciseDefinition.description}
-          </DefinitionDescription>
+          <DefinitionDescription>{description}</DefinitionDescription>
         </TabPanel>
         <TabPanel>
-          <DefinitionDescription>
-            {exerciseDefinition.solutionDescription}
-          </DefinitionDescription>
+          <DefinitionDescription>{solutionDescription}</DefinitionDescription>
         </TabPanel>
       </TabPanels>
     </Tabs>

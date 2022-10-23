@@ -55,7 +55,7 @@ export function Exercises() {
           <Text>{ExercisesLabels.LOADING_LABEL}</Text>
         </Box>
       )}
-      {definitionList && selectedDefinition && (
+      {!isLoadingDefinitions && definitionList && selectedDefinition && (
         <Box className="exercises-page-container">
           <DefinitionsPanel
             isOpen={isPanelOpen}

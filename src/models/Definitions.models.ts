@@ -9,20 +9,21 @@ export enum DefinitionType {
 type DefinitionCommonAttributes = {
   id: string;
   panelLabel: string;
-  description: string;
 };
 
 export type ExerciseDefinition = DefinitionCommonAttributes & {
   type: DefinitionType.EXERCISE;
   testEnvironments: TestingEnvironment[];
+  descriptionsMap: Record<TestingEnvironment, string>;
+  solutionDescriptionsMap: Record<TestingEnvironment, string>;
   fileSchemasMap: Record<TestingEnvironment, ExerciseFileSchemas>;
   testCommandsMap: Record<TestingEnvironment, string>;
-  solutionDescription: string;
 };
 
 export type SectionDefinition = DefinitionCommonAttributes & {
   type: DefinitionType.SECTION;
   exercises: ExerciseDefinition[];
+  description: string;
 };
 
 export type Definition = ExerciseDefinition | SectionDefinition;
