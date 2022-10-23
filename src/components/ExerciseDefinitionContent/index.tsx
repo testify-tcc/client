@@ -1,165 +1,51 @@
 import "./ExerciseDefinitionContent.scss";
 
-import {
-  Box,
-  Button,
-  Select,
-  Tab,
-  TabList,
-  TabPanel,
-  TabPanels,
-  Tabs,
-} from "@chakra-ui/react";
+import { Box, Tab, TabList, TabPanel, TabPanels, Tabs } from "@chakra-ui/react";
 import {
   ExerciseFileContentMap,
   ExerciseFileSchemas,
   ExerciseFileType,
 } from "src/models/ExerciseFile.models";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import {
+  TestingEnvironment,
+  TestingEnvironmentLanguages,
+} from "src/models/TestingEnvironments.models";
 
 import { CodeEditor } from "../CodeEditor";
-import { Colors } from "src/theme";
-import { ExerciseDefinition } from "src/models/Definitions.models";
 import { ExerciseDefinitionContentLabels } from "./ExerciseDefinitionContent.labels";
-import { ExerciseUtils } from "src/utils/Exercises.utils";
-import { RunnerFacade } from "src/resources/RunnerFacade";
 import { TestOutput } from "../TestOutput";
-import { TestingEnvironment } from "src/models/TestingEnvironments.models";
-import { TestingEnvironmentUtils } from "src/utils/TestingEnvironment.utils";
-import { useEffectOnlyOnDependenciesUpdate } from "src/hooks/useEffectOnlyOnDependenciesUpdate";
 
 type Props = {
-  exerciseDefinition: ExerciseDefinition;
+  passed: boolean;
+  tabIndex: number;
+  output: string | null;
+  fileSchemas: ExerciseFileSchemas;
+  fileContents: ExerciseFileContentMap;
+  testingEnvironment: TestingEnvironment;
+  onTabIndexChange: (index: number) => void;
+  onFileContentChange: (fileName: string, fileContent: string) => void;
+  getCodeEditorLanguage: (
+    testingEnvironment: TestingEnvironment,
+  ) => TestingEnvironmentLanguages;
 };
 
-export function ExerciseDefinitionContent({ exerciseDefinition }: Props) {
-  const [tabIndex, setTabIndex] = useState<number>(0);
-  const [passed, setPassed] = useState<boolean>(false);
-  const [output, setOutput] = useState<string | null>(null);
-  const [isTestRunning, setIsTestRunning] = useState<boolean>(false);
-  const [fileSchemas, setFileSchemas] = useState<ExerciseFileSchemas>([]);
-  const [fileContents, setFileContents] = useState<ExerciseFileContentMap>({});
-  const [testingEnvironment, setTestingEnvironment] =
-    useState<TestingEnvironment>(exerciseDefinition.testEnvironments[0]);
-
-  const outputTabIndex = useMemo((): number => {
-    return exerciseDefinition.fileSchemasMap[testingEnvironment].length;
-  }, [exerciseDefinition, testingEnvironment]);
-
-  const openFirstTab = useCallback(() => {
-    setTabIndex(0);
-  }, []);
-
-  const resetOutput = useCallback(() => {
-    setOutput(null);
-  }, []);
-
-  const handleTestingEnvironmentChange = useCallback(
-    (testingEnvironment: TestingEnvironment) => {
-      setTestingEnvironment(testingEnvironment);
-    },
-    [],
-  );
-
-  const getCodeEditorLanguage = (testingEnvironment: TestingEnvironment) => {
-    return ExerciseUtils.getLanguageFromTestingEnvironment(testingEnvironment);
-  };
-
-  const handleFileContentChange = (fileName: string, fileContent: string) => {
-    setFileContents((oldFileContents) => {
-      return {
-        ...oldFileContents,
-        [fileName]: fileContent,
-      };
-    });
-  };
-
-  const runTest = useCallback(async () => {
-    setIsTestRunning(true);
-    if (testingEnvironment) {
-      const response = await RunnerFacade.runTestAndGetOutput({
-        testingEnvironment,
-        testCommand: exerciseDefinition.testCommandsMap[testingEnvironment],
-        files: ExerciseUtils.createFileList(fileSchemas, fileContents),
-      });
-      setPassed(response.passed);
-      setOutput(response.output);
-    }
-    setIsTestRunning(false);
-  }, [testingEnvironment, exerciseDefinition, fileSchemas, fileContents]);
-
-  useEffect(() => {
-    if (fileSchemas) {
-      const initialFileContents: ExerciseFileContentMap = {};
-      fileSchemas.forEach((fileSchema) => {
-        initialFileContents[fileSchema.fileName] = fileSchema.initialContent;
-      });
-      setFileContents(initialFileContents);
-    }
-  }, [fileSchemas]);
-
-  useEffectOnlyOnDependenciesUpdate(() => {
-    if (output) {
-      setTabIndex(outputTabIndex);
-    }
-  }, [output]);
-
-  useEffect(() => {
-    resetOutput();
-    openFirstTab();
-  }, [openFirstTab, resetOutput, testingEnvironment]);
-
-  useEffect(() => {
-    setFileSchemas(exerciseDefinition.fileSchemasMap[testingEnvironment]);
-    resetOutput();
-    openFirstTab();
-  }, [exerciseDefinition, openFirstTab, resetOutput, testingEnvironment]);
-
+export function ExerciseDefinitionContent({
+  passed,
+  output,
+  tabIndex,
+  fileSchemas,
+  fileContents,
+  testingEnvironment,
+  onTabIndexChange,
+  onFileContentChange,
+  getCodeEditorLanguage,
+}: Props) {
   return (
     <Box className="exercise-content-container">
-      <Box className="exercise-actions-container">
-        {exerciseDefinition.testEnvironments.length > 0 && testingEnvironment && (
-          <Select
-            size="lg"
-            className="exercise-testing-environment-options"
-            maxWidth="400px"
-            value={testingEnvironment}
-            onChange={(event) =>
-              handleTestingEnvironmentChange(
-                event.target.value as TestingEnvironment,
-              )
-            }
-          >
-            {exerciseDefinition.testEnvironments.map((testingEnvironment) => {
-              return (
-                <option
-                  key={`testing-environment-${testingEnvironment}`}
-                  value={testingEnvironment}
-                >
-                  {TestingEnvironmentUtils.getTestingEnvironmentLabel(
-                    testingEnvironment,
-                  )}
-                </option>
-              );
-            })}
-          </Select>
-        )}
-        <Button
-          variant="solid"
-          size="lg"
-          className="exercise-run-test-button"
-          colorScheme={Colors.PRIMARY}
-          loadingText={ExerciseDefinitionContentLabels.RUN_TEST_BUTTON_LOADING}
-          isLoading={isTestRunning}
-          onClick={runTest}
-        >
-          {ExerciseDefinitionContentLabels.RUN_TEST_BUTTON}
-        </Button>
-      </Box>
       <Tabs
         index={tabIndex}
         className="exercise-files"
-        onChange={(index) => setTabIndex(index)}
+        onChange={(index) => onTabIndexChange(index)}
       >
         <TabList className="exercise-file-names-list">
           {fileSchemas.map((fileSchema) => (
@@ -185,7 +71,7 @@ export function ExerciseDefinitionContent({ exerciseDefinition }: Props) {
                 className="exercise-file-editor"
                 value={fileContents[fileSchema.fileName]}
                 onChange={(fileContent) => {
-                  handleFileContentChange(fileSchema.fileName, fileContent);
+                  onFileContentChange(fileSchema.fileName, fileContent);
                 }}
               />
             </TabPanel>

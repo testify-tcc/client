@@ -1,4 +1,5 @@
 import { DefinitionRendererWrapper } from "../DefinitionRendererWrapper";
+import { Divider } from "@chakra-ui/react";
 import { SectionDefinition } from "src/models/Definitions.models";
 import { SectionDefinitionContent } from "../SectionDefinitionContent";
 import { SectionDefinitionHeader } from "../SectionDefinitionHeader";
@@ -11,11 +12,10 @@ export function SectionDefinitionRenderer({
   sectionDefinition,
 }: Props): JSX.Element {
   return (
-    <DefinitionRendererWrapper
-      header={<SectionDefinitionHeader sectionDefinition={sectionDefinition} />}
-      content={
-        <SectionDefinitionContent sectionDefinition={sectionDefinition} />
-      }
-    />
+    <DefinitionRendererWrapper>
+      <SectionDefinitionHeader sectionDefinition={sectionDefinition} />
+      <Divider orientation="horizontal" />
+      <SectionDefinitionContent sectionDefinition={sectionDefinition} />
+    </DefinitionRendererWrapper>
   );
 }

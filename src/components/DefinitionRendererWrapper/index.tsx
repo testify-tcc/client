@@ -1,23 +1,16 @@
 import "./DefinitionRendererWrapper.scss";
 
-import { Box, Divider } from "@chakra-ui/react";
+import { Box } from "@chakra-ui/react";
+import { ReactElement } from "react";
 
 type Props = {
-  header: JSX.Element;
-  content: JSX.Element;
+  children: ReactElement[];
 };
 
-export function DefinitionRendererWrapper({
-  header,
-  content,
-}: Props): JSX.Element {
+export function DefinitionRendererWrapper({ children }: Props): JSX.Element {
   return (
     <Box className="definition-wrapper">
-      <Box className="definition-container">
-        {header}
-        <Divider orientation="horizontal" />
-        {content}
-      </Box>
+      <Box className="definition-container">{children}</Box>
     </Box>
   );
 }
