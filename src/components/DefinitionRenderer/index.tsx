@@ -1,23 +1,17 @@
-import "./DefinitionRenderer.scss";
+import { Definition, DefinitionType } from "src/models/Definitions.models";
 
-import { Box, Divider } from "@chakra-ui/react";
-
-import { Definition } from "src/models/Definitions.models";
-import { DefinitionContent } from "../DefinitionContent";
-import { DefinitionHeader } from "../DefinitionHeader";
+import { ExerciseDefinitionRenderer } from "../ExerciseDefinitionRenderer";
+import { SectionDefinitionRenderer } from "../SectionDefinitionRenderer";
 
 type Props = {
   definition: Definition;
 };
 
 export function DefinitionRenderer({ definition }: Props): JSX.Element {
-  return (
-    <Box className="definition-wrapper">
-      <Box className="definition-container">
-        <DefinitionHeader definition={definition} />
-        <Divider orientation="horizontal" />
-        <DefinitionContent definition={definition} />
-      </Box>
-    </Box>
-  );
+  switch (definition.type) {
+    case DefinitionType.EXERCISE:
+      return <ExerciseDefinitionRenderer exerciseDefinition={definition} />;
+    case DefinitionType.SECTION:
+      return <SectionDefinitionRenderer sectionDefinition={definition} />;
+  }
 }
