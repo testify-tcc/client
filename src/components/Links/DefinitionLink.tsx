@@ -1,6 +1,6 @@
+import { Button, TypographyProps } from "@chakra-ui/react";
 import { Colors, FontFamilies, FontSizes } from "src/theme";
 
-import { Button } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 import { usePathUtils } from "src/hooks/usePathUtils";
 import { useQueryParams } from "src/hooks/useQueryParams";
@@ -10,7 +10,8 @@ type Props = {
   definitionId: string;
   color: Colors;
   fontSize: FontSizes;
-  fontFamily: FontFamilies;
+  fontFamily?: FontFamilies;
+  fontWeight?: TypographyProps["fontWeight"];
 };
 
 export function DefinitionLink({
@@ -19,6 +20,7 @@ export function DefinitionLink({
   color,
   fontSize,
   fontFamily,
+  fontWeight,
 }: Props) {
   const { exercisesPath } = usePathUtils();
   const { getQueryString } = useQueryParams();
@@ -29,6 +31,7 @@ export function DefinitionLink({
     >
       <Button
         variant="link"
+        fontWeight={fontWeight ?? "normal"}
         color={color}
         fontSize={fontSize}
         fontFamily={fontFamily}

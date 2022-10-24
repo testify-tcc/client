@@ -1,4 +1,4 @@
-import { Colors, FontFamilies, FontSizes } from "src/theme";
+import { Colors, FontSizes } from "src/theme";
 
 import { Definition } from "src/models/Definitions.models";
 import { DefinitionLink } from "../Links/DefinitionLink";
@@ -18,7 +18,6 @@ export function DefinitionItemButton(props: Props) {
   return (
     <DefinitionLink
       fontSize={FontSizes.TEXT}
-      fontFamily={FontFamilies.COMFORTAA}
       color={definitionItemColor}
       label={props.definition.panelLabel}
       definitionId={props.definition.id}

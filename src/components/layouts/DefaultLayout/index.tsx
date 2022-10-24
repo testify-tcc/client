@@ -16,7 +16,7 @@ type Props = PropsWithChildren & {
 export function DefaultLayout({ children, classes }: Props) {
   return (
     <Box
-      fontFamily={FontFamilies.COMFORTAA}
+      fontFamily={FontFamilies.ROBOTO}
       className={classNames("default-layout-container", classes?.container)}
     >
       <Navbar />

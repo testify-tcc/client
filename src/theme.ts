@@ -1,6 +1,7 @@
 import { extendTheme } from "@chakra-ui/react";
 
 export enum FontFamilies {
+  ROBOTO = "roboto",
   COMFORTAA = "comfortaa",
   MONOSPACE = "monospace",
 }
@@ -25,6 +26,7 @@ export enum FontSizes {
 
 export const theme = extendTheme({
   fonts: {
+    [FontFamilies.ROBOTO]: `'Roboto', sans-serif`,
     [FontFamilies.COMFORTAA]: `"Comfortaa", cursive`,
     [FontFamilies.MONOSPACE]: `ui-monospace,SFMono-Regular,SF Mono,Consolas,Liberation Mono,Menlo,monospace`,
   },

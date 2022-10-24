@@ -1,7 +1,7 @@
 import "./SectionDefinitionContent.scss";
 
 import { Box, ListItem, UnorderedList } from "@chakra-ui/react";
-import { Colors, FontFamilies, FontSizes } from "src/theme";
+import { Colors, FontSizes } from "src/theme";
 
 import { DefinitionLink } from "../Links/DefinitionLink";
 import { SectionDefinition } from "src/models/Definitions.models";
@@ -23,7 +23,6 @@ export function SectionDefinitionContent({ sectionDefinition }: Props) {
             <DefinitionLink
               color={Colors.BLACK}
               fontSize={FontSizes.TEXT}
-              fontFamily={FontFamilies.COMFORTAA}
               label={exerciseDefinition.panelLabel}
               definitionId={exerciseDefinition.id}
             />

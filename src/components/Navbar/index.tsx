@@ -16,6 +16,7 @@ export function Navbar() {
       className="navbar-container"
       bgColor={Colors.PRIMARY}
       color={Colors.WHITE}
+      fontFamily={FontFamilies.COMFORTAA}
     >
       <Link to={homePath}>
         <Button
@@ -23,7 +24,6 @@ export function Navbar() {
           className="navbar-platform-name"
           color={Colors.WHITE}
           fontSize={FontSizes.HEADING1}
-          fontFamily={FontFamilies.COMFORTAA}
         >
           {NavbarLabels.PLATFORM_NAME}
         </Button>
@@ -34,7 +34,6 @@ export function Navbar() {
           className="navbar-section"
           color={Colors.WHITE}
           fontSize={FontSizes.TEXT}
-          fontFamily={FontFamilies.COMFORTAA}
         >
           {NavbarLabels.EXERCISES_SECTION}
         </Button>

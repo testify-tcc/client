@@ -10,13 +10,13 @@ import {
   UnorderedList,
 } from "@chakra-ui/react";
 import { ChevronRightIcon, CloseIcon, HamburgerIcon } from "@chakra-ui/icons";
-import { Colors, FontFamilies } from "src/theme";
 import {
   Definition,
   DefinitionList,
   DefinitionType,
 } from "src/models/Definitions.models";
 
+import { Colors } from "src/theme";
 import { DefinitionItemButton } from "../DefinitionItemButton";
 import { DefinitionsPanelAriaLabels } from "./DefinitionsPanel.ariaLabels";
 import { DefinitionsPanelLabels } from "./DefinitionsPanel.labels";
@@ -58,7 +58,7 @@ export function DefinitionsPanel(props: Props) {
   return (
     <Box className={classNames("definitions-panel", "definitions-panel-open")}>
       <Box className="definitions-panel-header">
-        <Heading as="h2" size="lg" fontFamily={FontFamilies.COMFORTAA}>
+        <Heading as="h2" size="lg">
           {DefinitionsPanelLabels.HEADING}
         </Heading>
         <IconButton
