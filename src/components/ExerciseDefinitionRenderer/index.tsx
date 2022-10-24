@@ -32,7 +32,9 @@ export function ExerciseDefinitionRenderer({
     useState<TestingEnvironment>(exerciseDefinition.testEnvironments[0]);
 
   const outputTabIndex = useMemo((): number => {
-    return exerciseDefinition.fileSchemasMap[testingEnvironment].length;
+    return exerciseDefinition.fileSchemasMap[testingEnvironment]
+      ? exerciseDefinition.fileSchemasMap[testingEnvironment].length
+      : 0;
   }, [exerciseDefinition, testingEnvironment]);
 
   const openFirstTab = useCallback(() => {
@@ -103,10 +105,16 @@ export function ExerciseDefinitionRenderer({
   }, [openFirstTab, resetOutput, testingEnvironment]);
 
   useEffect(() => {
-    setFileSchemas(exerciseDefinition.fileSchemasMap[testingEnvironment]);
-    resetOutput();
-    openFirstTab();
+    if (exerciseDefinition.fileSchemasMap[testingEnvironment]) {
+      setFileSchemas(exerciseDefinition.fileSchemasMap[testingEnvironment]);
+      resetOutput();
+      openFirstTab();
+    }
   }, [exerciseDefinition, openFirstTab, resetOutput, testingEnvironment]);
+
+  useEffect(() => {
+    setTestingEnvironment(exerciseDefinition.testEnvironments[0]);
+  }, [exerciseDefinition.testEnvironments]);
 
   return (
     <DefinitionRendererWrapper>
