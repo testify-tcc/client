@@ -32,7 +32,7 @@ export function ExerciseDefinitionHeader({
   }, [exerciseDefinition]);
 
   return (
-    <Tabs tabIndex={tabIndex} onChange={setTabIndex}>
+    <Tabs index={tabIndex} onChange={setTabIndex}>
       <TabList>
         <Tab>{ExerciseDefinitionHeaderLabels.DESCRIPTION_TAB_LABEL}</Tab>
         <Tab>
