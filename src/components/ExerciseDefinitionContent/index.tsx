@@ -16,13 +16,13 @@ import { ExerciseDefinitionContentLabels } from "./ExerciseDefinitionContent.lab
 import { TestOutput } from "../TestOutput";
 
 type Props = {
-  passed: boolean;
-  tabIndex: number;
-  output: string | null;
+  testPassed: boolean;
+  fileTabIndex: number;
+  testOutput: string | null;
   fileSchemas: ExerciseFileSchemas;
   fileContents: ExerciseFileContentMap;
   testingEnvironment: TestingEnvironment;
-  onTabIndexChange: (index: number) => void;
+  onFileTabIndexChange: (fileTabIndex: number) => void;
   onFileContentChange: (fileName: string, fileContent: string) => void;
   getCodeEditorLanguage: (
     testingEnvironment: TestingEnvironment,
@@ -30,22 +30,22 @@ type Props = {
 };
 
 export function ExerciseDefinitionContent({
-  passed,
-  output,
-  tabIndex,
+  testPassed,
+  testOutput,
+  fileTabIndex,
   fileSchemas,
   fileContents,
   testingEnvironment,
-  onTabIndexChange,
+  onFileTabIndexChange,
   onFileContentChange,
   getCodeEditorLanguage,
 }: Props) {
   return (
     <Box className="exercise-content-container">
       <Tabs
-        index={tabIndex}
+        index={fileTabIndex}
         className="exercise-files"
-        onChange={(index) => onTabIndexChange(index)}
+        onChange={onFileTabIndexChange}
       >
         <TabList className="exercise-file-names-list">
           {fileSchemas.map((fileSchema) => (
@@ -56,7 +56,9 @@ export function ExerciseDefinitionContent({
               {fileSchema.fileName}
             </Tab>
           ))}
-          {output && <Tab>{ExerciseDefinitionContentLabels.OUTPUT_TAB}</Tab>}
+          {testOutput && (
+            <Tab>{ExerciseDefinitionContentLabels.TEST_OUTPUT_TAB}</Tab>
+          )}
         </TabList>
         <TabPanels className="exercise-file-contents">
           {fileSchemas.map((fileSchema) => (
@@ -76,9 +78,9 @@ export function ExerciseDefinitionContent({
               />
             </TabPanel>
           ))}
-          {output && (
+          {testOutput && (
             <TabPanel className="exercise-output-container">
-              <TestOutput output={output} passed={passed} />
+              <TestOutput output={testOutput} passed={testPassed} />
             </TabPanel>
           )}
         </TabPanels>

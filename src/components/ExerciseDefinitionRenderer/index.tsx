@@ -22,9 +22,9 @@ type Props = {
 export function ExerciseDefinitionRenderer({
   exerciseDefinition,
 }: Props): JSX.Element {
-  const [tabIndex, setTabIndex] = useState<number>(0);
-  const [passed, setPassed] = useState<boolean>(false);
-  const [output, setOutput] = useState<string | null>(null);
+  const [testPassed, setTestPassed] = useState<boolean>(false);
+  const [testOutput, setTestOutput] = useState<string | null>(null);
+  const [fileTabIndex, setFileTabIndex] = useState<number>(0);
   const [isTestRunning, setIsTestRunning] = useState<boolean>(false);
   const [fileSchemas, setFileSchemas] = useState<ExerciseFileSchemas>([]);
   const [fileContents, setFileContents] = useState<ExerciseFileContentMap>({});
@@ -37,16 +37,16 @@ export function ExerciseDefinitionRenderer({
       : 0;
   }, [exerciseDefinition, testingEnvironment]);
 
-  const openFirstTab = useCallback(() => {
-    setTabIndex(0);
+  const openFirstFile = useCallback(() => {
+    setFileTabIndex(0);
   }, []);
 
-  const resetOutput = useCallback(() => {
-    setOutput(null);
+  const resetTestOutput = useCallback(() => {
+    setTestOutput(null);
   }, []);
 
-  const handleTabIndexChange = useCallback((tabIndex: number) => {
-    setTabIndex(tabIndex);
+  const handleFileTabIndexChange = useCallback((filetTabIndex: number) => {
+    setFileTabIndex(filetTabIndex);
   }, []);
 
   const handleTestingEnvironmentChange = useCallback(
@@ -77,8 +77,8 @@ export function ExerciseDefinitionRenderer({
         testCommand: exerciseDefinition.testCommandsMap[testingEnvironment],
         files: ExerciseUtils.createFileList(fileSchemas, fileContents),
       });
-      setPassed(response.passed);
-      setOutput(response.output);
+      setTestPassed(response.passed);
+      setTestOutput(response.output);
     }
     setIsTestRunning(false);
   }, [testingEnvironment, exerciseDefinition, fileSchemas, fileContents]);
@@ -94,23 +94,23 @@ export function ExerciseDefinitionRenderer({
   }, [fileSchemas]);
 
   useEffectOnlyOnDependenciesUpdate(() => {
-    if (output) {
-      setTabIndex(outputTabIndex);
+    if (testOutput) {
+      setFileTabIndex(outputTabIndex);
     }
-  }, [output]);
+  }, [testOutput]);
 
   useEffect(() => {
-    resetOutput();
-    openFirstTab();
-  }, [openFirstTab, resetOutput, testingEnvironment]);
+    resetTestOutput();
+    openFirstFile();
+  }, [openFirstFile, resetTestOutput, testingEnvironment]);
 
   useEffect(() => {
     if (exerciseDefinition.fileSchemasMap[testingEnvironment]) {
       setFileSchemas(exerciseDefinition.fileSchemasMap[testingEnvironment]);
-      resetOutput();
-      openFirstTab();
+      resetTestOutput();
+      openFirstFile();
     }
-  }, [exerciseDefinition, openFirstTab, resetOutput, testingEnvironment]);
+  }, [exerciseDefinition, openFirstFile, resetTestOutput, testingEnvironment]);
 
   useEffect(() => {
     setTestingEnvironment(exerciseDefinition.testEnvironments[0]);
@@ -132,13 +132,13 @@ export function ExerciseDefinitionRenderer({
       />
       <Divider orientation="horizontal" />
       <ExerciseDefinitionContent
-        output={output}
-        passed={passed}
-        tabIndex={tabIndex}
+        testOutput={testOutput}
+        testPassed={testPassed}
+        fileTabIndex={fileTabIndex}
         fileSchemas={fileSchemas}
         fileContents={fileContents}
         testingEnvironment={testingEnvironment}
-        onTabIndexChange={handleTabIndexChange}
+        onFileTabIndexChange={handleFileTabIndexChange}
         onFileContentChange={handleFileContentChange}
         getCodeEditorLanguage={getCodeEditorLanguage}
       />
