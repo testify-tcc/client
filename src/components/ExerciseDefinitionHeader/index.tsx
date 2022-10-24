@@ -1,9 +1,9 @@
 import { Tab, TabList, TabPanel, TabPanels, Tabs } from "@chakra-ui/react";
 import { useEffect, useMemo, useState } from "react";
 
-import { DefinitionDescription } from "../DefinitionDescription";
 import { ExerciseDefinition } from "src/models/Definitions.models";
 import { ExerciseDefinitionHeaderLabels } from "./ExerciseDefinitionHeader.labels";
+import { MarkdownReader } from "../MarkdownReader";
 import { TestingEnvironment } from "src/models/TestingEnvironments.models";
 
 type Props = {
@@ -41,10 +41,10 @@ export function ExerciseDefinitionHeader({
       </TabList>
       <TabPanels>
         <TabPanel>
-          <DefinitionDescription>{description}</DefinitionDescription>
+          <MarkdownReader>{description}</MarkdownReader>
         </TabPanel>
         <TabPanel>
-          <DefinitionDescription>{solutionDescription}</DefinitionDescription>
+          <MarkdownReader>{solutionDescription}</MarkdownReader>
         </TabPanel>
       </TabPanels>
     </Tabs>

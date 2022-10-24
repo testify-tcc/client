@@ -1,4 +1,4 @@
-import { DefinitionDescription } from "../DefinitionDescription";
+import { MarkdownReader } from "../MarkdownReader";
 import { SectionDefinition } from "src/models/Definitions.models";
 
 type Props = {
@@ -8,9 +8,5 @@ type Props = {
 export function SectionDefinitionHeader({
   sectionDefinition,
 }: Props): JSX.Element {
-  return (
-    <DefinitionDescription>
-      {sectionDefinition.description}
-    </DefinitionDescription>
-  );
+  return <MarkdownReader>{sectionDefinition.description}</MarkdownReader>;
 }
